@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
@@ -16,6 +17,13 @@ import 'package:flutter/widgets.dart';
 class Region {
   /// {@macro r13n.regionalizations.Region}
   const Region({required this.regionalCode});
+
+  /// Fetches the region from the [PlatformDispatcher].
+  Region.fromPlatform()
+      : this(
+          regionalCode:
+              PlatformDispatcher.instance.locale.countryCode!.toLowerCase(),
+        );
 
   /// Code that identifies this current region.
   final String regionalCode;
@@ -277,6 +285,8 @@ Future<Map<Type, dynamic>> _loadAll(
 
     if (resource is! Future) {
       resources[type] = resource;
+    } else if (resource is SynchronousFuture) {
+      resource.then<void>((dynamic value) => resources[type] = value);
     } else {
       pendingResources ??= {};
       pendingResources[delegate.type] = resource;
