@@ -18,12 +18,17 @@ class Region {
   /// {@macro r13n.regionalizations.Region}
   const Region({required this.regionalCode});
 
+  /// An empty region.
+  const Region.empty() : this(regionalCode: '');
+
   /// Fetches the region from the [PlatformDispatcher].
-  Region.fromPlatform()
-      : this(
-          regionalCode:
-              PlatformDispatcher.instance.locale.countryCode!.toLowerCase(),
-        );
+  ///
+  /// Defaults to [Region.empty] when there is no specified platform region.
+  factory Region.fromPlatform() {
+    final localeCountryCode = PlatformDispatcher.instance.locale.countryCode;
+    if (localeCountryCode == null) return const Region.empty();
+    return Region(regionalCode: localeCountryCode.toLowerCase());
+  }
 
   /// Code that identifies this current region.
   final String regionalCode;
