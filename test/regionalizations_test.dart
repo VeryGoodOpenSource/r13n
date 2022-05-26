@@ -6,15 +6,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:r13n/r13n.dart';
 
 class _TestRegionalizationsDelegate extends RegionalizationsDelegate<bool> {
-  _TestRegionalizationsDelegate(this.resource);
+  _TestRegionalizationsDelegate(this.loader);
 
-  final bool resource;
+  final bool Function(Region) loader;
 
   @override
   bool isSupported(Region region) => true;
 
   @override
-  bool load(Region region) => resource;
+  bool load(Region region) => loader(region);
 
   @override
   bool shouldReload(covariant RegionalizationsDelegate old) => true;
@@ -124,12 +124,14 @@ void main() {
     group('of', () {
       testWidgets('returns resource', (tester) async {
         const region = Region.empty();
-        const resource = true;
         late final BuildContext buildContext;
+        const resource = true;
         await tester.pumpWidget(
           Regionalizations(
             region: region,
-            delegates: [_TestRegionalizationsDelegate(resource)],
+            delegates: [
+              _TestRegionalizationsDelegate((_) => resource),
+            ],
             child: Builder(
               builder: (context) {
                 buildContext = context;
@@ -186,6 +188,98 @@ void main() {
             isNull,
           );
         },
+      );
+    });
+
+    group('updateDependencies', () {
+      testWidgets('updates Region', (tester) async {
+        late BuildContext buildContext;
+        late StateSetter stateSetter;
+        var region = Region.empty();
+        final delegate = _TestRegionalizationsDelegate(
+          (region) => region == Region.empty(),
+        );
+
+        await tester.pumpWidget(
+          StatefulBuilder(
+            builder: (context, setState) {
+              stateSetter = setState;
+              return Regionalizations(
+                region: region,
+                delegates: [delegate],
+                child: Builder(
+                  builder: (context) {
+                    buildContext = context;
+                    return SizedBox.shrink();
+                  },
+                ),
+              );
+            },
+          ),
+        );
+
+        expect(
+          Regionalizations.of<bool>(buildContext, bool),
+          equals(delegate.load(region)),
+        );
+
+        region = Region(regionalCode: 'test');
+        stateSetter(() {});
+        await tester.pump();
+
+        expect(
+          Regionalizations.of<bool>(buildContext, bool),
+          equals(delegate.load(region)),
+        );
+      });
+
+      group('updates delegates', () {
+        testWidgets('when delagates change', (tester) async {
+          late BuildContext buildContext;
+          late StateSetter stateSetter;
+          var delegates = [_TestRegionalizationsDelegate((_) => true)];
+
+          await tester.pumpWidget(
+            StatefulBuilder(
+              builder: (context, setState) {
+                stateSetter = setState;
+                return Regionalizations(
+                  region: Region.empty(),
+                  delegates: delegates,
+                  child: Builder(
+                    builder: (context) {
+                      buildContext = context;
+                      return SizedBox.shrink();
+                    },
+                  ),
+                );
+              },
+            ),
+          );
+
+          expect(
+            Regionalizations.of<bool>(buildContext, bool),
+            isTrue,
+          );
+
+          delegates = [_TestRegionalizationsDelegate((_) => false)];
+          stateSetter(() {});
+          await tester.pump();
+
+          expect(
+            Regionalizations.of<bool>(buildContext, bool),
+            isFalse,
+          );
+        });
+      });
+    });
+  });
+
+  group('RegionalizationsDelegate', () {
+    test('toString returns normally', () {
+      expect(
+        () => _TestRegionalizationsDelegate((_) => true).toString(),
+        returnsNormally,
       );
     });
   });
