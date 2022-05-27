@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  formz:
+  r13n:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
 
   pana:
