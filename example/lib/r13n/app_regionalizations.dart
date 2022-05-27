@@ -1,5 +1,4 @@
 import 'package:example/r13n/regions/regions.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:r13n/r13n.dart';
 
