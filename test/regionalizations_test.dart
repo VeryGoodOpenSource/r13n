@@ -1,3 +1,10 @@
+// Copyright (c) 2022, Very Good Ventures
+// https://verygood.ventures
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: avoid_positional_boolean_parameters
 
@@ -22,13 +29,13 @@ class _TestRegionalizationsDelegate extends RegionalizationsDelegate<bool> {
 
 void main() {
   group('Region', () {
-    group('can be instantied', () {
+    group('can be instantiated', () {
       test('with named constructor', () {
         expect(Region(regionalCode: ''), isA<Region>());
       });
 
-      test('with empty contrustor', () {
-        expect(Region.empty(), isA<Region>());
+      test('with empty constructor', () {
+        expect(Region.empty, isA<Region>());
       });
 
       test('with fromPlatform factory', () {
@@ -64,7 +71,7 @@ void main() {
 
     test('toString returns normally', () {
       expect(
-        () => Region.empty().toString(),
+        () => Region.empty.toString(),
         returnsNormally,
       );
     });
@@ -73,14 +80,14 @@ void main() {
   group('Regionalizations', () {
     test('can be instantiated', () {
       expect(
-        Regionalizations(region: Region.empty()),
+        Regionalizations(region: Region.empty),
         isA<Regionalizations>(),
       );
     });
 
     group('regionOf', () {
       testWidgets('gets region', (tester) async {
-        const region = Region.empty();
+        const region = Region.empty;
         late final BuildContext buildContext;
         await tester.pumpWidget(
           Regionalizations(
@@ -101,7 +108,7 @@ void main() {
       });
 
       testWidgets(
-        'throws AssertionError when there is no Regionalization ancestor',
+        'throws AssertionError when there is no Regionalizations ancestor',
         (tester) async {
           late final BuildContext buildContext;
           await tester.pumpWidget(
@@ -123,7 +130,7 @@ void main() {
 
     group('of', () {
       testWidgets('returns resource', (tester) async {
-        const region = Region.empty();
+        const region = Region.empty;
         late final BuildContext buildContext;
         const resource = true;
         await tester.pumpWidget(
@@ -153,7 +160,7 @@ void main() {
           late final BuildContext buildContext;
           await tester.pumpWidget(
             Regionalizations(
-              region: Region.empty(),
+              region: Region.empty,
               child: Builder(
                 builder: (context) {
                   buildContext = context;
@@ -171,7 +178,7 @@ void main() {
       );
 
       testWidgets(
-        'returns null when there is no Regionalization ancestor',
+        'returns null when there is no Regionalizations ancestor',
         (tester) async {
           late final BuildContext buildContext;
           await tester.pumpWidget(
@@ -195,9 +202,9 @@ void main() {
       testWidgets('updates Region', (tester) async {
         late BuildContext buildContext;
         late StateSetter stateSetter;
-        var region = Region.empty();
+        var region = Region.empty;
         final delegate = _TestRegionalizationsDelegate(
-          (region) => region == Region.empty(),
+          (region) => region == Region.empty,
         );
 
         await tester.pumpWidget(
@@ -234,7 +241,7 @@ void main() {
       });
 
       group('updates delegates', () {
-        testWidgets('when delagates change', (tester) async {
+        testWidgets('when delegates length changes', (tester) async {
           late BuildContext buildContext;
           late StateSetter stateSetter;
           var delegates = [_TestRegionalizationsDelegate((_) => true)];
@@ -244,7 +251,45 @@ void main() {
               builder: (context, setState) {
                 stateSetter = setState;
                 return Regionalizations(
-                  region: Region.empty(),
+                  region: Region.empty,
+                  delegates: delegates,
+                  child: Builder(
+                    builder: (context) {
+                      buildContext = context;
+                      return SizedBox.shrink();
+                    },
+                  ),
+                );
+              },
+            ),
+          );
+
+          expect(
+            Regionalizations.of<bool>(buildContext, bool),
+            isNotNull,
+          );
+
+          delegates = [];
+          stateSetter(() {});
+          await tester.pump();
+
+          expect(
+            Regionalizations.of<bool>(buildContext, bool),
+            isNull,
+          );
+        });
+
+        testWidgets('when delegates change', (tester) async {
+          late BuildContext buildContext;
+          late StateSetter stateSetter;
+          var delegates = [_TestRegionalizationsDelegate((_) => true)];
+
+          await tester.pumpWidget(
+            StatefulBuilder(
+              builder: (context, setState) {
+                stateSetter = setState;
+                return Regionalizations(
+                  region: Region.empty,
                   delegates: delegates,
                   child: Builder(
                     builder: (context) {
