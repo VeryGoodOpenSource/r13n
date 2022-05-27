@@ -185,9 +185,8 @@ class _RegionalizationsScope extends InheritedWidget {
   final Map<Type, dynamic> typeToResources;
 
   @override
-  bool updateShouldNotify(_RegionalizationsScope old) {
-    return typeToResources != old.typeToResources;
-  }
+  bool updateShouldNotify(_RegionalizationsScope old) =>
+      typeToResources != old.typeToResources;
 }
 
 /// A factory for a set of regionalized resources of type `T`, to be loaded by a
