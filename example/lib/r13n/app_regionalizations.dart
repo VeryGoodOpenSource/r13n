@@ -38,11 +38,7 @@ class _AppRegionalizationsDelegate
   final Map<String, AppRegionalizations> _regions;
 
   @override
-  Future<AppRegionalizations> load(Region region) {
-    return SynchronousFuture<AppRegionalizations>(
-      _regions[region.regionalCode]!,
-    );
-  }
+  AppRegionalizations load(Region region) => _regions[region.regionalCode]!;
 
   @override
   bool isSupported(Region region) => _regions.containsKey(region.regionalCode);
