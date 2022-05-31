@@ -1,0 +1,2 @@
+{{#regions}}
+      '{{#lowerCase}}{{code}}{{/lowerCase}}': AppRegionalizations{{#pascalCase}}{{code}}{{/pascalCase}}(),{{/regions}}

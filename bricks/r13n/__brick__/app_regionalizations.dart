@@ -1,30 +1,28 @@
-import 'package:example/r13n/regions/regions.dart';
 import 'package:flutter/widgets.dart';
 import 'package:r13n/r13n.dart';
+
+{{> regions_imports.dart }}
 
 abstract class AppRegionalizations extends Regionalizations {
   const AppRegionalizations({required super.region, super.key});
 
-  static const _fallback = AppRegionalizationsFallback();
+  static const _fallback = AppRegionalizations{{#pascalCase}}{{fallbackCode}}{{/pascalCase}}();
 
   static const RegionalizationsDelegate<AppRegionalizations> delegate =
       _AppRegionalizationsDelegate(
     regions: {
-      'es': AppRegionalizationsEs(),
-      'uk': AppRegionalizationsUk(),
-      'us': AppRegionalizationsUs(),
+{{> regions_map.dart }}
     },
   );
 
-  static AppRegionalizations of(BuildContext context) {
-    return Regionalizations.of<AppRegionalizations>(
-          context,
-          AppRegionalizations,
-        ) ??
-        _fallback;
-  }
+  static AppRegionalizations of(BuildContext context) =>
+      Regionalizations.of<AppRegionalizations>(
+        context,
+        AppRegionalizations,
+      ) ??
+      _fallback;
 
-  String get supportEmail;
+  {{> regions_getters.dart }}
 }
 
 @immutable
