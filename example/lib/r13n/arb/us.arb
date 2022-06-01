@@ -1,13 +1,3 @@
 {
-    "urlIDEXX": "https://www.idexx.com",
-    "urlVCP": "https://www.vetconnectplus.com",
-    "urlPrivacy": "https://www.idexx.com/corporate/common/privacy-policy.html",
-    "urlTerms": "https://www.idexx.com/masterterms",
-    "urlFAQ": "https://pages.idexx.com/vetconnectplus-sign-in",
-    "urlNew": "https://www.idexx.com/en/veterinary/software-services/vetconnect-plus/#mobile",
-    "supportPhone": "1-888-433-9987",
-    "supportEmail": "CagVetConnectPLUS-Daytime@idexx.com",
-    "supportPhoneOptions": "",
-    "backupSupportPhone": "",
-    "backupSupportPhoneOptions": ""
+    "supportEmail": "us@verygood.ventures"
 }

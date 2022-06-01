@@ -45,6 +45,7 @@ Future<void> _run(HookContext context) async {
     'regions': regions,
     'getters': getters,
     'fallbackCode': fallbackCode,
+    'arbDir': configuration.arbDir,
   };
 }
 

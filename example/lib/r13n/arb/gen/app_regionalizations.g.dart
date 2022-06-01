@@ -1,17 +1,24 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
+
 import 'package:flutter/widgets.dart';
 import 'package:r13n/r13n.dart';
 
-{{> regions_imports.dart }}
+import 'app_regionalizations_es.g.dart';
+import 'app_regionalizations_uk.g.dart';
+import 'app_regionalizations_us.g.dart';
 
 abstract class AppRegionalizations extends Regionalizations {
   const AppRegionalizations({required super.region, super.key});
 
-  static const _fallback = AppRegionalizations{{#pascalCase}}{{fallbackCode}}{{/pascalCase}}();
+  static const _fallback = AppRegionalizationsUs();
 
   static const RegionalizationsDelegate<AppRegionalizations> delegate =
       _AppRegionalizationsDelegate(
     regions: {
-{{> regions_map.dart }}
+      'es': AppRegionalizationsEs(),
+      'uk': AppRegionalizationsUk(),
+      'us': AppRegionalizationsUs(),
     },
   );
 
@@ -22,7 +29,7 @@ abstract class AppRegionalizations extends Regionalizations {
       ) ??
       _fallback;
 
-  {{> regions_getters.dart }}
+  String get supportEmail;
 }
 
 @immutable

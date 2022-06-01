@@ -1,23 +1,30 @@
+{{> file_header.dart }}
+
 import 'package:flutter/widgets.dart';
 import 'package:r13n/r13n.dart';
 
-abstract class AppRegionalizations extends Regionalizations {
-  const AppRegionalizations();
+{{> regions_imports.dart }}
 
-  static const _fallback = AppRegionalizationsFallback();
+abstract class AppRegionalizations extends Regionalizations {
+  const AppRegionalizations({required super.region, super.key});
+
+  static const _fallback = AppRegionalizations{{#pascalCase}}{{fallbackCode}}{{/pascalCase}}();
 
   static const RegionalizationsDelegate<AppRegionalizations> delegate =
       _AppRegionalizationsDelegate(
-    regions: {},
+    regions: {
+{{> regions_map.dart }}
+    },
   );
 
-  static AppRegionalizations of(BuildContext context) {
-    return Regionalizations.of<AppRegionalizations>(
-          context,
-          AppRegionalizations,
-        ) ??
-        _fallback;
-  }
+  static AppRegionalizations of(BuildContext context) =>
+      Regionalizations.of<AppRegionalizations>(
+        context,
+        AppRegionalizations,
+      ) ??
+      _fallback;
+
+  {{> regions_getters.dart }}
 }
 
 @immutable
