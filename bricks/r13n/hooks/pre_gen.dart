@@ -18,14 +18,14 @@ Future<void> _run(HookContext context) async {
   final regions = <Map<String, dynamic>>[];
   String? fallbackCode;
 
-  final documents = await readArbDocuments(configuration, context);
+  final documents = await readArbDocuments(configuration);
   for (final document in documents) {
-    final fileName = document.path.split('/').last;
-    final regionCode = fileName.split('.').first;
+    final regionCode = document.region;
 
     final region = {
       'code': regionCode,
-      'values': document.values.map((value) => value.toMap()).toList(),
+      'values':
+          document.regionalizedValues.map((value) => value.toMap()).toList(),
     };
     regions.add(region);
 
@@ -35,7 +35,7 @@ Future<void> _run(HookContext context) async {
     }
   }
 
-  final getters = documents.first.values
+  final getters = documents.first.regionalizedValues
       .map(
         (entry) => {'value': entry.key},
       )
@@ -50,14 +50,20 @@ Future<void> _run(HookContext context) async {
 }
 
 class R13nException implements Exception {
-  const R13nException(this.error);
+  const R13nException(
+    this.error, {
+    required this.message,
+  });
 
   final Object error;
+
+  final String message;
 }
 
 void onError(HookContext context, Object error, StackTrace stackTrace) {
   if (error is R13nException) {
-    context.logger.err('Something happend:');
+    context.logger.err('Oops, something went wrong!');
+    context.logger.err(error.message);
     throw error;
   }
   throw error;
@@ -65,7 +71,6 @@ void onError(HookContext context, Object error, StackTrace stackTrace) {
 
 Future<List<ArbDocument>> readArbDocuments(
   R13nYamlConfiguration configuration,
-  HookContext context,
 ) async {
   final arbPath = path.join(Directory.current.path, configuration.arbDir);
   final arbDirectory = Directory(arbPath);
@@ -79,11 +84,20 @@ Future<List<ArbDocument>> readArbDocuments(
 
   final documents = <ArbDocument>[];
   for (final path in arbPaths) {
-    final document = await ArbDocument.read(path, context);
+    final document = await ArbDocument.read(path);
     documents.add(document);
   }
 
   return documents;
+}
+
+class _ArbMissingRegionTag extends R13nException {
+  const _ArbMissingRegionTag(Object error)
+      : super(
+          error,
+          message:
+              'Missing region tag in arb file, make sure to include @@region',
+        );
 }
 
 class ArbDocument {
@@ -94,19 +108,17 @@ class ArbDocument {
 
   static const _extension = '.arb';
 
-  static Future<ArbDocument> read(String path, HookContext context) async {
+  static Future<ArbDocument> read(String path) async {
     assert(
       path.endsWith(_extension),
-      'Path $path does not end with $_extension',
+      'File is not a valid arb file: $path',
     );
 
     final file = File(path);
 
     final encoding = Encoding.getByName('utf-8');
     final json = await file.readAsString(encoding: encoding!);
-    // context.logger.prompt(json.toString());
     final content = jsonDecode(json) as Map<String, dynamic>;
-    // context.logger.prompt(content.toString());
 
     final values = <ArbValue>[];
     for (final key in content.keys) {
@@ -122,6 +134,20 @@ class ArbDocument {
       values: values,
     );
   }
+
+  String get region {
+    try {
+      final region = values.firstWhere(
+        (value) => value.key == '@@region',
+      );
+      return region.value;
+    } catch (error, stackTrace) {
+      Error.throwWithStackTrace(_ArbMissingRegionTag(error), stackTrace);
+    }
+  }
+
+  Iterable<ArbValue> get regionalizedValues =>
+      values.where((value) => !value.key.startsWith('@@'));
 
   final String path;
   final List<ArbValue> values;
@@ -145,7 +171,11 @@ class ArbValue {
 R13nYamlConfiguration? _r13nYamlConfiguration;
 
 class _R13YamlNotFound extends R13nException {
-  _R13YamlNotFound(Object error) : super(error);
+  _R13YamlNotFound(Object error)
+      : super(
+          error,
+          message: 'No r13n.yaml found.',
+        );
 }
 
 class R13nYamlConfiguration {
@@ -180,27 +210,3 @@ class R13nYamlConfiguration {
   final String arbDir;
   final String templateArbFile;
 }
-
-  // context.vars = {
-  //   'regions': [
-  //     {
-  //       'code': 'us',
-  //       'values': [
-  //         {
-  //           'key': 'supportEmail',
-  //           'value': 'email@us.com',
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       'code': 'es',
-  //       'values': [
-  //         {
-  //           'key': 'supportEmail',
-  //           'value': 'email@us.com',
-  //         },
-  //       ],
-  //     }
-  //   ],
-  // };
-
