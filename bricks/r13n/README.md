@@ -9,7 +9,7 @@ Developed with 💙 by [Very Good Ventures][very_good_ventures_link] 🦄
 
 --- 
 
-A brick that generates regionalization (r13n) code from arb files.
+A brick that generates regionalization (r13n) code from arb files. Designed to be used in conjunction with the [r13n][github_r13n_link] Flutter package.
 
 ## Getting Started 🚀
 
@@ -17,20 +17,54 @@ A brick that generates regionalization (r13n) code from arb files.
 
 ```yaml
 arb-dir: lib/r13n/arb
-template-arb-file: us.arb
+template-arb-file: app_us.arb
 ```
 
-2. Now, run `mason make r13n` so that codegen takes place. You should see generated files in `lib/r13n/arb/gen`.
+2. Next, add an `app_us.arb` file in the same directory specified by `r13n.yaml`, which is `lib/r13n/arb`:
+
+```
+├── r13n
+│   ├── arb
+│   │   └── app_us.arb
+```
+
+3. Following, add the regionalised strings to your `.arb` file:
+
+`app_us.arb`
+
+```arb
+{
+    "@@region": "us",
+    "supportEmail": "us@verygood.ventures"
+}
+```
+
+4. To generate regionalization code use the following command:
+
+```sh
+$ mason make r13n --on-conflict overwrite
+```
+
+6. You should see generated files in `lib/r13n/arb/gen`:
+
+```
+├── r13n
+│   ├── arb
+│   │   ├── gen
+│   │   │   ├── app_regionalizations_us.g.dart
+│   │   │   └── app_regionalizations.g.dart
+│   │   ├── app_us.arb
+```
 
 
-## Configuration ⚙️
+## Configuring `r13n.yaml` ⚙️
 
 | Option            | Description                                                                | Default                           |
 |-------------------|----------------------------------------------------------------------------|-----------------------------------|
 | arb-dir           | Directory of the regionalized arb files.                                   | Not supported, must be specified. |
 | template-arb-file | Fallback regionalization; used when the user is in a non-supported region. | Not supported, must be specified. |
 
-
+[github_r13n_link]: https://github.com/VeryGoodOpenSource/r13n
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
 [logo_black]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_black.png#gh-light-mode-only
