@@ -1,3 +1,3 @@
 # 0.1.0+1
 
-- TODO: Describe initial release.
+- Includes initial brick to generate regionalization (r13n) code from arb filed.
