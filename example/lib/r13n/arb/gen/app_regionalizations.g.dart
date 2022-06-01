@@ -4,8 +4,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:r13n/r13n.dart';
 
-import 'app_regionalizations_es.g.dart';
 import 'app_regionalizations_uk.g.dart';
+import 'app_regionalizations_es.g.dart';
 import 'app_regionalizations_us.g.dart';
 
 abstract class AppRegionalizations extends Regionalizations {
@@ -16,8 +16,8 @@ abstract class AppRegionalizations extends Regionalizations {
   static const RegionalizationsDelegate<AppRegionalizations> delegate =
       _AppRegionalizationsDelegate(
     regions: {
-      'es': AppRegionalizationsEs(),
       'uk': AppRegionalizationsUk(),
+      'es': AppRegionalizationsEs(),
       'us': AppRegionalizationsUs(),
     },
   );
