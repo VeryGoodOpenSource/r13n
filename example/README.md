@@ -30,8 +30,8 @@ This project relies on [flutter_localizations][flutter_localizations_link] and f
 ```
 ├── r13n
 │   ├── arb
-│   │   ├── app_en.arb
-│   │   └── app_es.arb
+│   │   ├── app_uk.arb
+│   │   └── app_us.arb
 ```
 
 2. Add the translated strings to each `.arb` file:
@@ -45,16 +45,16 @@ This project relies on [flutter_localizations][flutter_localizations_link] and f
 }
 ```
 
-`app_es.arb`
+`app_uk.arb`
 
 ```arb
 {
-    "@@region": "us",
-    "supportEmail": "es@verygood.ventures"
+    "@@region": "uk",
+    "supportEmail": "uk@verygood.ventures"
 }
 ```
 
-3. Generate regionalized files.
+3. Generate files.
 ```
 $ mason make r13n --on-conflict overwrite
 ```
@@ -63,11 +63,11 @@ $ mason make r13n --on-conflict overwrite
 ├── r13n
 │   ├── arb
 │   │   ├── gen
-│   │   │   ├── app_regionalizations_es.g.dart
+│   │   │   ├── app_regionalizations_uk.g.dart
 │   │   │   ├── app_regionalizations_us.g.dart
 │   │   │   └── app_regionalizations.g.dart
-│   │   ├── app_en.arb
-│   │   └── app_es.arb
+│   │   ├── app_us.arb
+│   │   └── app_uk.arb
 ```
 
 4. Use the new string
