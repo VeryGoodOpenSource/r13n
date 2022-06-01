@@ -1,34 +1,40 @@
-# Regionalization (r13n)
+# Regionalizations (r13n) Example
 
-[![Very Good Ventures][logo_white]][very_good_ventures_link_dark]
-[![Very Good Ventures][logo_black]][very_good_ventures_link_light]
+[![License: MIT][license_badge]][license_link]
 
-Developed with 💙 by [Very Good Ventures][very_good_ventures_link] 🦄
+An example application that showcases the usage of the r13n flutter package.
 
-[![License: MIT][license_badge]][license_link] [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
+_Built by [Very Good Ventures][very_good_ventures_link]_
 
---- 
-
-A brick that generates regionalization (r13n) code from arb files. Designed to be used in conjunction with the [r13n][github_r13n_link] Flutter package.
+---
 
 ## Getting Started 🚀
 
-1. Add a new yaml file to the root directory of the Flutter project called `r13n.yaml` with the following content:
+To run the desired project either use the launch configuration in VSCode/Android Studio or use the following commands:
 
-```yaml
-arb-dir: lib/r13n/arb
-template-arb-file: app_us.arb
+```sh
+$ flutter pub get
+$ flutter run
 ```
 
-2. Next, add an `app_us.arb` file in the same directory specified by `r13n.yaml`, which is `lib/r13n/arb`:
+---
+
+## Working with Regionalizations 🌐
+
+This project relies on [flutter_localizations][flutter_localizations_link] and follows the [official internationalization guide for Flutter][internationalization_link].
+
+### Adding Regions
+
+1. For each supported region, add a new ARB file in `lib/r13n/arb`.
 
 ```
 ├── r13n
 │   ├── arb
+│   │   ├── app_uk.arb
 │   │   └── app_us.arb
 ```
 
-3. Following, add the regionalised strings to your `.arb` file:
+2. Add the translated strings to each `.arb` file:
 
 `app_us.arb`
 
@@ -39,21 +45,45 @@ template-arb-file: app_us.arb
 }
 ```
 
-4. Now, run `mason make r13n` so that the code generation takes place. You should see generated files in `lib/r13n/arb/gen`.
+`app_uk.arb`
+
+```arb
+{
+    "@@region": "uk",
+    "supportEmail": "uk@verygood.ventures"
+}
+```
+
+3. Generate files.
+```
+$ mason make r13n --on-conflict overwrite
+```
+
+```
+├── r13n
+│   ├── arb
+│   │   ├── gen
+│   │   │   ├── app_regionalizations_uk.g.dart
+│   │   │   ├── app_regionalizations_us.g.dart
+│   │   │   └── app_regionalizations.g.dart
+│   │   ├── app_us.arb
+│   │   └── app_uk.arb
+```
+
+4. Use the new string
+
+```dart
+import 'package:example/r13n/r13n.dart';
+
+@override
+Widget build(BuildContext context) {
+  final r13n = context.r13n;
+  return Text(r13n.supportEmail);
+}
+```
 
 
-## Configuring `r13n.yaml` ⚙️
-
-| Option            | Description                                                                | Default                           |
-|-------------------|----------------------------------------------------------------------------|-----------------------------------|
-| arb-dir           | Directory of the regionalized arb files.                                   | Not supported, must be specified. |
-| template-arb-file | Fallback regionalization; used when the user is in a non-supported region. | Not supported, must be specified. |
-
-[github_r13n_link]: https://github.com/VeryGoodOpenSource/r13n
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
-[logo_black]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_black.png#gh-light-mode-only
-[logo_white]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_white.png#gh-dark-mode-only
-[very_good_ventures_link_dark]: https://verygood.ventures#gh-dark-mode-only
-[very_good_ventures_link_light]: https://verygood.ventures#gh-light-mode-only
-[very_good_ventures_link]: https://verygood.ventures
+[very_good_ventures_link]: https://verygood.ventures/
+[workflow_link]: https://github.com/flutter/pinball/actions/workflows/main.yaml
