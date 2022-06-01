@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert' show Encoding, jsonDecode;
 
 import 'package:mason/mason.dart';
+import 'package:r13n/r13n.dart';
 import 'dart:io';
 
 import 'package:yaml/yaml.dart';
@@ -16,22 +17,22 @@ Future<void> _run(HookContext context) async {
   final configuration = await R13nYamlConfiguration.read();
 
   final regions = <Map<String, dynamic>>[];
-  String? fallbackCode;
+  Region? fallbackRegion;
 
   final documents = await readArbDocuments(configuration);
   for (final document in documents) {
-    final regionCode = document.region;
+    final region = document.region;
 
-    final region = {
-      'code': regionCode,
+    final regionMap = {
+      'code': region,
       'values':
           document.regionalizedValues.map((value) => value.toMap()).toList(),
     };
-    regions.add(region);
+    regions.add(regionMap);
 
     final isTemplate = document.path.endsWith(configuration.templateArbFile);
-    if (fallbackCode == null || isTemplate) {
-      fallbackCode = regionCode;
+    if (fallbackRegion == null || isTemplate) {
+      fallbackRegion = region;
     }
   }
 
@@ -44,7 +45,7 @@ Future<void> _run(HookContext context) async {
   context.vars = {
     'regions': regions,
     'getters': getters,
-    'fallbackCode': fallbackCode,
+    'fallbackCode': fallbackRegion?.regionalCode,
     'arbDir': configuration.arbDir,
   };
 }
@@ -135,12 +136,14 @@ class ArbDocument {
     );
   }
 
-  String get region {
+  Region get region {
     try {
-      final region = values.firstWhere(
-        (value) => value.key == '@@region',
-      );
-      return region.value;
+      final regionalCode = values
+          .firstWhere(
+            (value) => value.key == '@@region',
+          )
+          .value;
+      return Region(regionalCode: regionalCode);
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(_ArbMissingRegionTag(error), stackTrace);
     }
