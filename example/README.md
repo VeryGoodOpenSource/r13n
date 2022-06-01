@@ -95,7 +95,7 @@ Widget build(BuildContext context) {
 }
 ```
 
-[mason_r13n_link]: https://brickhub.dev/bricks/r13n/0.1.0-dev.1
+[mason_r13n_link]: https://brickhub.dev/bricks/r13n/0.1.0-dev.2
 [github_r13n_link]: https://github.com/VeryGoodOpenSource/r13n
 [mason_cli]: https://github.com/felangel/mason/tree/master/packages/mason_cli
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
