@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert' show Encoding, jsonDecode;
 
 import 'package:mason/mason.dart';
-import 'package:r13n/r13n.dart';
 import 'dart:io';
 
 import 'package:yaml/yaml.dart';
@@ -17,7 +16,7 @@ Future<void> _run(HookContext context) async {
   final configuration = await R13nYamlConfiguration.read();
 
   final regions = <Map<String, dynamic>>[];
-  Region? fallbackRegion;
+  String? fallbackRegion;
 
   final documents = await readArbDocuments(configuration);
   for (final document in documents) {
@@ -45,7 +44,7 @@ Future<void> _run(HookContext context) async {
   context.vars = {
     'regions': regions,
     'getters': getters,
-    'fallbackCode': fallbackRegion?.regionalCode,
+    'fallbackCode': fallbackRegion,
     'arbDir': configuration.arbDir,
   };
 }
@@ -136,14 +135,13 @@ class ArbDocument {
     );
   }
 
-  Region get region {
+  String get region {
     try {
-      final regionalCode = values
+      return values
           .firstWhere(
             (value) => value.key == '@@region',
           )
           .value;
-      return Region(regionalCode: regionalCode);
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(_ArbMissingRegionTag(error), stackTrace);
     }
