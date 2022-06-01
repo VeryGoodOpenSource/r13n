@@ -21,11 +21,11 @@ $ flutter run
 
 ## Working with Regionalizations 🌐
 
-This project relies on [flutter_localizations][flutter_localizations_link] and follows the [official internationalization guide for Flutter][internationalization_link].
+This project relies on the [r13n][github_r13n_link] flutter package and on the [r13n][mason_r13n_link] brick.
 
 ### Adding Regions
 
-1. For each supported region, add a new ARB file in `lib/r13n/arb`.
+1. For each supported region, add a new `.arb` file in `lib/r13n/arb`.
 
 ```
 ├── r13n
@@ -54,7 +54,20 @@ This project relies on [flutter_localizations][flutter_localizations_link] and f
 }
 ```
 
-3. Generate files.
+3. If you don't already have [`mason_cli`][mason_cli], use the following command:
+
+```sh
+$ dart pub global activate mason_cli
+```
+
+4. Then, install the `r13n` brick globally.
+
+```
+$ mason add r13n -g
+```
+
+
+5. Generate files.
 ```
 $ mason make r13n --on-conflict overwrite
 ```
@@ -70,7 +83,7 @@ $ mason make r13n --on-conflict overwrite
 │   │   └── app_uk.arb
 ```
 
-4. Use the new string
+6. Use the new string.
 
 ```dart
 import 'package:example/r13n/r13n.dart';
@@ -82,7 +95,9 @@ Widget build(BuildContext context) {
 }
 ```
 
-
+[mason_r13n_link]: https://brickhub.dev/bricks/r13n/0.1.0-dev.1
+[github_r13n_link]: https://github.com/VeryGoodOpenSource/r13n
+[mason_cli]: https://github.com/felangel/mason/tree/master/packages/mason_cli
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
 [very_good_ventures_link]: https://verygood.ventures/
