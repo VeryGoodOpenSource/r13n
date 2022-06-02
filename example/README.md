@@ -30,7 +30,7 @@ This project relies on the [r13n][github_r13n_link] flutter package and on the [
 ```
 ├── r13n
 │   ├── arb
-│   │   ├── app_uk.arb
+│   │   ├── app_gb.arb
 │   │   └── app_us.arb
 ```
 
@@ -45,12 +45,12 @@ This project relies on the [r13n][github_r13n_link] flutter package and on the [
 }
 ```
 
-`app_uk.arb`
+`app_gb.arb`
 
 ```arb
 {
-    "@@region": "uk",
-    "supportEmail": "uk@verygood.ventures"
+    "@@region": "gb",
+    "supportEmail": "gb@verygood.ventures"
 }
 ```
 
@@ -76,11 +76,11 @@ $ mason make r13n --on-conflict overwrite
 ├── r13n
 │   ├── arb
 │   │   ├── gen
-│   │   │   ├── app_regionalizations_uk.g.dart
+│   │   │   ├── app_regionalizations_gb.g.dart
 │   │   │   ├── app_regionalizations_us.g.dart
 │   │   │   └── app_regionalizations.g.dart
 │   │   ├── app_us.arb
-│   │   └── app_uk.arb
+│   │   └── app_gb.arb
 ```
 
 6. Use the new string.

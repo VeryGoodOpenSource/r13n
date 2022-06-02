@@ -48,7 +48,7 @@ class _ExamplePageState extends State<ExamplePage> {
                         child: Text('Spain'),
                       ),
                       DropdownMenuItem(
-                        value: Region(regionalCode: 'uk'),
+                        value: Region(regionalCode: 'gb'),
                         child: Text('United Kingdom'),
                       ),
                       DropdownMenuItem(
