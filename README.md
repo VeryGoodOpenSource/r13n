@@ -96,7 +96,7 @@ import 'package:example/r13n/r13n.dart';
 
 @override
 Widget build(BuildContext context) {
-  final r13n = context.r13n;
+  final r13n = AppRegionalizations.of(context);
   return Text(r13n.supportEmail);
 }
 ```
