@@ -68,5 +68,4 @@ $ mason make r13n --on-conflict overwrite
 [license_link]: https://opensource.org/licenses/MIT
 [logo_white]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_white.png#gh-dark-mode-only
 [very_good_ventures_link_dark]: https://verygood.ventures#gh-dark-mode-only
-[very_good_ventures_link_light]: https://verygood.ventures#gh-light-mode-only
 [very_good_ventures_link]: https://verygood.ventures
