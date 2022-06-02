@@ -104,7 +104,7 @@ Widget build(BuildContext context) {
 ## Roadmap 🗺
 
 - [ ] Support asynchronous delegates
-- [ ] Support regionalization based on IP
+- [ ] Support regionalization based on IP address
 - [ ] Provide API's to support sub-regions (for example, states in the U.S.)
 
 ## Additional Resources 📚
