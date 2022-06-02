@@ -11,12 +11,12 @@
 import 'package:r13n/r13n.dart';
 import 'app_regionalizations.g.dart';
 
-class AppRegionalizationsUk extends AppRegionalizations {
-  const AppRegionalizationsUk()
+class AppRegionalizationsGb extends AppRegionalizations {
+  const AppRegionalizationsGb()
       : super(
-          region: const Region(regionalCode: 'uk'),
+          region: const Region(regionalCode: 'gb'),
         );
 
   @override
-  String get supportEmail => 'uk@verygood.ventures';
+  String get supportEmail => 'gb@verygood.ventures';
 }
