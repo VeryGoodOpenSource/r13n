@@ -69,11 +69,11 @@ class Region {
 class Regionalizations extends StatefulWidget {
   /// {@macro r13n.regionalizations.Regionalizations}
   const Regionalizations({
-    Key? key,
+    super.key,
     this.child,
     required this.region,
     this.delegates = const [],
-  }) : super(key: key);
+  });
 
   /// The widget below this widget in the tree.
   final Widget? child;
@@ -173,12 +173,11 @@ class _RegionalizationsState extends State<Regionalizations> {
 
 class _RegionalizationsScope extends InheritedWidget {
   const _RegionalizationsScope({
-    Key? key,
     required this.region,
     required this.state,
     required this.typeToResources,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   final Region region;
   final _RegionalizationsState state;
