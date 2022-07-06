@@ -1,7 +1,7 @@
 name: r13n
-description: A Very Good Project created by Very Good CLI.
-version: 1.0.0+1
-publish_to: none
+description: A package that enables region-specific configurations (regionalization). Built by Very Good Ventures.
+version: 0.1.0+1
+homepage: https://github.com/VeryGoodOpenSource/r13n
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
@@ -13,4 +13,4 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  very_good_analysis: ^3.0.0
+  very_good_analysis: ^3.0.1
