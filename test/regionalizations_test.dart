@@ -24,7 +24,7 @@ class _TestRegionalizationsDelegate extends RegionalizationsDelegate<bool> {
   bool load(Region region) => loader(region);
 
   @override
-  bool shouldReload(covariant RegionalizationsDelegate old) => true;
+  bool shouldReload(covariant RegionalizationsDelegate<dynamic> old) => true;
 }
 
 void main() {
