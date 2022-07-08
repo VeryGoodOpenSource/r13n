@@ -8,7 +8,7 @@ import 'package:r13n/r13n.dart';
 abstract class AppRegionalizations extends Regionalizations {
   const AppRegionalizations({required super.region, super.key});
 
-  static const _fallback = AppRegionalizations{{#pascalCase}}{{fallbackCode}}{{/pascalCase}}();
+  static const _fallback = AppRegionalizations{{fallbackCode.pascalCase()}}();
 
   static const RegionalizationsDelegate<AppRegionalizations> delegate =
       _AppRegionalizationsDelegate(
@@ -18,10 +18,7 @@ abstract class AppRegionalizations extends Regionalizations {
   );
 
   static AppRegionalizations of(BuildContext context) =>
-      Regionalizations.of<AppRegionalizations>(
-        context,
-        AppRegionalizations,
-      ) ??
+      Regionalizations.of<AppRegionalizations>(context, AppRegionalizations) ??
       _fallback;
 
   {{> regions_getters.dart }}

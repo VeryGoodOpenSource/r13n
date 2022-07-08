@@ -30,10 +30,7 @@ abstract class AppRegionalizations extends Regionalizations {
   );
 
   static AppRegionalizations of(BuildContext context) =>
-      Regionalizations.of<AppRegionalizations>(
-        context,
-        AppRegionalizations,
-      ) ??
+      Regionalizations.of<AppRegionalizations>(context, AppRegionalizations) ??
       _fallback;
 
   String get supportEmail;

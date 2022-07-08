@@ -1,2 +1,2 @@
 {{#regions}}
-      '{{#lowerCase}}{{code}}{{/lowerCase}}': AppRegionalizations{{#pascalCase}}{{code}}{{/pascalCase}}(),{{/regions}}
+      '{{code.lowerCase()}}': AppRegionalizations{{code.pascalCase()}}(),{{/regions}}
