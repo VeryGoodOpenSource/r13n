@@ -4,27 +4,19 @@ import 'package:r13n/r13n.dart';
 
 void main() {
   runApp(
-    const MaterialApp(
-      home: ExamplePage(),
-    ),
+    const MaterialApp(home: _ExamplePage()),
   );
 }
 
-class ExamplePage extends StatefulWidget {
-  const ExamplePage({super.key});
+class _ExamplePage extends StatefulWidget {
+  const _ExamplePage();
 
   @override
-  State<ExamplePage> createState() => _ExamplePageState();
+  State<_ExamplePage> createState() => _ExamplePageState();
 }
 
-class _ExamplePageState extends State<ExamplePage> {
-  late Region region;
-
-  @override
-  void initState() {
-    super.initState();
-    region = Region.fromPlatform();
-  }
+class _ExamplePageState extends State<_ExamplePage> {
+  late Region region = Region.fromPlatform();
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +27,13 @@ class _ExamplePageState extends State<ExamplePage> {
         builder: (context) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(Regionalizations.regionOf(context).regionalCode),
+              title: Text(context.r13n.region.regionalCode),
             ),
             body: Center(
               child: Column(
                 children: [
                   DropdownButton<Region>(
-                    value: Regionalizations.regionOf(context),
+                    value: context.r13n.region,
                     items: const [
                       DropdownMenuItem(
                         value: Region(regionalCode: 'es'),
