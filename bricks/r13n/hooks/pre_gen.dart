@@ -82,12 +82,9 @@ Future<List<ArbDocument>> readArbDocuments(
       )
       .map((fileSystemEntity) => fileSystemEntity.path);
 
-  final documents = <ArbDocument>[];
-  for (final path in arbPaths) {
-    final document = await ArbDocument.read(path);
-    documents.add(document);
-  }
-
+  final documents = await Future.wait([
+    for (final path in arbPaths) ArbDocument.read(path),
+  ]);
   return documents;
 }
 
