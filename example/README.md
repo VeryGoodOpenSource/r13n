@@ -13,8 +13,8 @@ _Built by [Very Good Ventures][very_good_ventures_link]_
 To run the desired project either use the launch configuration in VSCode/Android Studio or use the following commands:
 
 ```sh
-$ flutter pub get
-$ flutter run
+flutter pub get
+flutter run
 ```
 
 ---
