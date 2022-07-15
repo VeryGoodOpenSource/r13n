@@ -57,19 +57,19 @@ This project relies on the [r13n][github_r13n_link] flutter package and on the [
 3. If you don't already have [`mason_cli`][mason_cli], use the following command:
 
 ```sh
-$ dart pub global activate mason_cli
+dart pub global activate mason_cli
 ```
 
 4. Then, install the `r13n` brick globally.
 
 ```
-$ mason add r13n -g
+mason add r13n -g
 ```
 
 
 5. Generate files.
 ```
-$ mason make r13n --on-conflict overwrite
+mason make r13n --on-conflict overwrite
 ```
 
 ```
