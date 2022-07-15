@@ -16,12 +16,12 @@ class _ExamplePage extends StatefulWidget {
 }
 
 class _ExamplePageState extends State<_ExamplePage> {
-  late Region region = Region.fromPlatform();
+  late var _region = Region.fromPlatform();
 
   @override
   Widget build(BuildContext context) {
     return Regionalizations(
-      region: region,
+      region: _region,
       delegates: const [AppRegionalizations.delegate],
       child: Builder(
         builder: (context) {
@@ -50,7 +50,7 @@ class _ExamplePageState extends State<_ExamplePage> {
                     ],
                     onChanged: (value) {
                       if (value == null) return;
-                      setState(() => region = value);
+                      setState(() => _region = value);
                     },
                   ),
                   Text('Support email: ${context.r13n.supportEmail}'),
