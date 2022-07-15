@@ -65,9 +65,8 @@ void onError(HookContext context, Object error, StackTrace stackTrace) {
   if (error is R13nException) {
     context.logger.err('Oops, something went wrong!');
     context.logger.err(error.message);
-    throw error;
   }
-  throw error;
+  Error.throwWithStackTrace(error, stackTrace);
 }
 
 Future<List<ArbDocument>> readArbDocuments(
