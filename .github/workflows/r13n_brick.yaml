@@ -1,0 +1,11 @@
+name: 🧱🪝 R13n Brick Hooks 
+
+on: pull_request
+
+jobs:
+  build:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    with:
+      coverage_excludes: "*.g.dart"
+      dart_sdk: "stable"
+      working_directory: "bricks/r13n/hooks/"
