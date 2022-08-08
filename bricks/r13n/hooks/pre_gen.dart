@@ -36,9 +36,7 @@ Future<void> _run(HookContext context) async {
   }
 
   final getters = documents.first.regionalizedValues
-      .map(
-        (entry) => {'value': entry.key},
-      )
+      .map((entry) => {'value': entry.key})
       .toList();
 
   context.vars = {
@@ -82,10 +80,7 @@ Future<List<ArbDocument>> readArbDocuments(
       )
       .map((fileSystemEntity) => fileSystemEntity.path);
 
-  final documents = await Future.wait([
-    for (final path in arbPaths) ArbDocument.read(path),
-  ]);
-  return documents;
+  return Future.wait(arbPaths.map(ArbDocument.read));
 }
 
 class _ArbMissingRegionTag extends R13nException {
@@ -134,11 +129,7 @@ class ArbDocument {
 
   String get region {
     try {
-      return values
-          .firstWhere(
-            (value) => value.key == '@@region',
-          )
-          .value;
+      return values.firstWhere((value) => value.key == '@@region').value;
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(_ArbMissingRegionTag(error), stackTrace);
     }

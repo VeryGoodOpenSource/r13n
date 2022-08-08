@@ -16,7 +16,7 @@ class _ExamplePage extends StatefulWidget {
 }
 
 class _ExamplePageState extends State<_ExamplePage> {
-  late var _region = Region.fromPlatform();
+  var _region = Region.fromPlatform();
 
   @override
   Widget build(BuildContext context) {
