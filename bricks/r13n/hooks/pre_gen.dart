@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:convert' show Encoding, jsonDecode;
+import 'dart:convert';
 
 import 'package:mason/mason.dart';
 import 'dart:io';
 
-import 'package:yaml/yaml.dart';
 import 'package:path/path.dart' as path;
+import 'package:yaml/yaml.dart';
 
 Future<void> run(HookContext context) async => runZonedGuarded(
       () => _run(context),
@@ -13,7 +13,7 @@ Future<void> run(HookContext context) async => runZonedGuarded(
     );
 
 Future<void> _run(HookContext context) async {
-  final configuration = await R13nYamlConfiguration.read();
+  final configuration = await R13nConfiguration.read();
 
   final regions = <Map<String, dynamic>>[];
   String? fallbackRegion;
@@ -48,17 +48,6 @@ Future<void> _run(HookContext context) async {
   };
 }
 
-class R13nException implements Exception {
-  const R13nException(
-    this.error, {
-    required this.message,
-  });
-
-  final Object error;
-
-  final String message;
-}
-
 void onError(HookContext context, Object error, StackTrace stackTrace) {
   if (error is R13nException) {
     context.logger.err('Oops, something went wrong!');
@@ -68,7 +57,7 @@ void onError(HookContext context, Object error, StackTrace stackTrace) {
 }
 
 Future<List<ArbDocument>> readArbDocuments(
-  R13nYamlConfiguration configuration,
+  R13nConfiguration configuration,
 ) async {
   final arbPath = path.join(Directory.current.path, configuration.arbDir);
   final arbDirectory = Directory(arbPath);
@@ -76,70 +65,45 @@ Future<List<ArbDocument>> readArbDocuments(
       .listSync()
       .where(
         (fileSystemEntity) =>
-            fileSystemEntity.path.endsWith(ArbDocument._extension),
+            fileSystemEntity.path.endsWith(ArbDocument.extension),
       )
       .map((fileSystemEntity) => fileSystemEntity.path);
 
   return Future.wait(arbPaths.map(ArbDocument.read));
 }
 
-class _ArbMissingRegionTag extends R13nException {
-  const _ArbMissingRegionTag(Object error)
-      : super(
-          error,
-          message:
-              'Missing region tag in arb file, make sure to include @@region',
-        );
-}
+/// The classes below should be part of their own library, but Mason
+/// does not yet support that, so for now they are here.
+///
+/// Enjoy.
 
-class ArbDocument {
-  const ArbDocument._({
-    required this.path,
-    required this.values,
+class R13nConfiguration {
+  const R13nConfiguration._({
+    required this.arbDir,
+    required this.templateArbFile,
   });
 
-  static const _extension = '.arb';
+  R13nConfiguration._fromYamlMap(YamlMap map)
+      : this._(
+          arbDir: map['arb-dir'] as String,
+          templateArbFile: map['template-arb-file'] as String,
+        );
 
-  static Future<ArbDocument> read(String path) async {
-    assert(
-      path.endsWith(_extension),
-      'File is not a valid arb file: $path',
-    );
+  static const _fileName = 'r13n.yaml';
 
-    final file = File(path);
-
-    final encoding = Encoding.getByName('utf-8');
-    final json = await file.readAsString(encoding: encoding!);
-    final content = jsonDecode(json) as Map<String, dynamic>;
-
-    final values = <ArbValue>[];
-    for (final key in content.keys) {
-      final value = ArbValue(
-        key: key,
-        value: content[key],
-      );
-      values.add(value);
-    }
-
-    return ArbDocument._(
-      path: path,
-      values: values,
-    );
-  }
-
-  String get region {
+  static Future<R13nConfiguration> read() async {
     try {
-      return values.firstWhere((value) => value.key == '@@region').value;
-    } catch (error, stackTrace) {
-      Error.throwWithStackTrace(_ArbMissingRegionTag(error), stackTrace);
+      final file = File(path.join(Directory.current.path, _fileName));
+      final content = await file.readAsString();
+      final yaml = loadYaml(content) as YamlMap;
+      return R13nConfiguration._fromYamlMap(yaml);
+    } on FileSystemException catch (error, stackTrace) {
+      Error.throwWithStackTrace(YamlNotFoundException(error), stackTrace);
     }
   }
 
-  Iterable<ArbValue> get regionalizedValues =>
-      values.where((value) => !value.key.startsWith('@@'));
-
-  final String path;
-  final List<ArbValue> values;
+  final String arbDir;
+  final String templateArbFile;
 }
 
 class ArbValue {
@@ -157,45 +121,70 @@ class ArbValue {
       };
 }
 
-R13nYamlConfiguration? _r13nYamlConfiguration;
+class ArbDocument {
+  const ArbDocument._({
+    required this.path,
+    required this.values,
+  });
 
-class _R13YamlNotFound extends R13nException {
-  _R13YamlNotFound(Object error)
+  static const extension = '.arb';
+
+  static Future<ArbDocument> read(String path) async {
+    assert(path.endsWith(extension), 'File is not a valid arb file: $path');
+
+    final file = File(path);
+    final json = await file.readAsString(encoding: utf8);
+    final content = jsonDecode(json) as Map<String, dynamic>;
+
+    final values = content.entries
+        .map((e) => ArbValue(key: e.key, value: e.value))
+        .toList();
+
+    return ArbDocument._(path: path, values: values);
+  }
+
+  String get region {
+    try {
+      return values.firstWhere((value) => value.key == '@@region').value;
+    } catch (error, stackTrace) {
+      Error.throwWithStackTrace(
+        ArbMissingRegionTagException(error),
+        stackTrace,
+      );
+    }
+  }
+
+  Iterable<ArbValue> get regionalizedValues =>
+      values.where((value) => !value.key.startsWith('@@'));
+
+  final String path;
+  final List<ArbValue> values;
+}
+
+abstract class R13nException implements Exception {
+  const R13nException(
+    this.error, {
+    required this.message,
+  });
+
+  final Object error;
+
+  final String message;
+}
+
+class YamlNotFoundException extends R13nException {
+  YamlNotFoundException(Object error)
       : super(
           error,
           message: 'No r13n.yaml found.',
         );
 }
 
-class R13nYamlConfiguration {
-  const R13nYamlConfiguration._({
-    required this.arbDir,
-    required this.templateArbFile,
-  });
-
-  R13nYamlConfiguration._fromYamlMap(YamlMap map)
-      : this._(
-          arbDir: map['arb-dir'] as String,
-          templateArbFile: map['template-arb-file'] as String,
+class ArbMissingRegionTagException extends R13nException {
+  const ArbMissingRegionTagException(Object error)
+      : super(
+          error,
+          message:
+              'Missing region tag in arb file, make sure to include @@region',
         );
-
-  static const _fileName = 'r13n.yaml';
-
-  static Future<R13nYamlConfiguration> read() async {
-    if (_r13nYamlConfiguration != null) return _r13nYamlConfiguration!;
-
-    try {
-      final file = File(path.join(Directory.current.path, _fileName));
-      final content = await file.readAsString();
-      final yaml = loadYaml(content) as YamlMap;
-      final options =
-          _r13nYamlConfiguration = R13nYamlConfiguration._fromYamlMap(yaml);
-      return options;
-    } on FileSystemException catch (error, stackTrace) {
-      Error.throwWithStackTrace(_R13YamlNotFound(error), stackTrace);
-    }
-  }
-
-  final String arbDir;
-  final String templateArbFile;
 }
