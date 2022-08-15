@@ -9,5 +9,13 @@ void main() {
       expect(error, isA<YamlNotFoundException>());
       expect(error.message, equals('No r13n.yaml found.'));
     });
+
+    test('toString() ', () {
+      final error = YamlNotFoundException(Object());
+      expect(
+        error.toString(),
+        equals('YamlNotFoundException: No r13n.yaml found.'),
+      );
+    });
   });
 }

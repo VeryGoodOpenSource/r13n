@@ -12,5 +12,13 @@ void main() {
         equals('Missing region tag in arb file, make sure to include @@region'),
       );
     });
+
+    test('toString() ', () {
+      final error = ArbMissingRegionTagException(Object());
+      expect(
+        error.toString(),
+        equals('Missing region tag in arb file, make sure to include @@region'),
+      );
+    });
   });
 }
