@@ -7,12 +7,9 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
-Future<void> run(HookContext context) async => runZonedGuarded(
-      () => _run(context),
-      (error, stack) => onError(context, error, stack),
-    );
+Future<void> run(HookContext context) async => preGen(context);
 
-Future<void> _run(HookContext context) async {
+Future<void> preGen(HookContext context) async {
   final configuration = await R13nConfiguration.read();
 
   final regions = <Map<String, dynamic>>[];
@@ -46,14 +43,6 @@ Future<void> _run(HookContext context) async {
     'fallbackCode': fallbackRegion,
     'arbDir': configuration.arbDir,
   };
-}
-
-void onError(HookContext context, Object error, StackTrace stackTrace) {
-  if (error is R13nException) {
-    context.logger.err('Oops, something went wrong!');
-    context.logger.err(error.message);
-  }
-  Error.throwWithStackTrace(error, stackTrace);
 }
 
 Future<List<ArbDocument>> readArbDocuments(
@@ -97,8 +86,8 @@ class R13nConfiguration {
       final content = await file.readAsString();
       final yaml = loadYaml(content) as YamlMap;
       return R13nConfiguration._fromYamlMap(yaml);
-    } on FileSystemException catch (error, stackTrace) {
-      Error.throwWithStackTrace(YamlNotFoundException(error), stackTrace);
+    } on FileSystemException catch (error) {
+      throw YamlNotFoundException(error);
     }
   }
 
@@ -170,6 +159,9 @@ abstract class R13nException implements Exception {
   final Object error;
 
   final String message;
+
+  @override
+  String toString() => '$runtimeType: $message';
 }
 
 class YamlNotFoundException extends R13nException {

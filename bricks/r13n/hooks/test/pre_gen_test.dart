@@ -22,7 +22,6 @@ void main() {
     late File configFile;
     late Directory arbDir;
     late File arbFile;
-    Map<String, dynamic> vars = {};
 
     setUp(() {
       configFile = _MockFile();
@@ -47,21 +46,39 @@ template-arb-file: TEMPLATE_ARB_FILE
       logger = _MockLogger();
       hookContext = _MockHookContext();
       when(() => hookContext.logger).thenReturn(logger);
-      when(() => hookContext.vars).thenAnswer((invocation) {
-        // TODO: doesn't set the vars
-        if (invocation.isGetter) {
-          return vars;
-        }
-        return vars = invocation.positionalArguments.first;
-      });
     });
 
     test('returns normally', () async {
+      Map<String, dynamic> vars = {};
+
+      when(() => hookContext.vars = any()).thenAnswer((invocation) {
+        if (invocation.isGetter) return vars;
+        return vars = invocation.positionalArguments.first;
+      });
+
       await IOOverrides.runZoned(
         () async {
           await pre_gen.run(hookContext);
 
-          expect(vars, equals({}));
+          expect(
+            vars,
+            equals({
+              'currentYear': 2022,
+              'regions': [
+                {
+                  'code': 'us',
+                  'values': [
+                    {'key': 'aValue', 'value': 'A Value'}
+                  ]
+                }
+              ],
+              'getters': [
+                {'value': 'aValue'}
+              ],
+              'fallbackCode': 'us',
+              'arbDir': 'ARB_DIR'
+            }),
+          );
         },
         createFile: (path) {
           if (path.endsWith('r13n.yaml')) {
@@ -74,6 +91,14 @@ template-arb-file: TEMPLATE_ARB_FILE
         },
         createDirectory: (path) => arbDir,
       );
+    });
+
+    test('when it fails, throws a R13nException', () async {
+      try {
+        await pre_gen.preGen(hookContext);
+      } catch (err) {
+        expect(err, isA<pre_gen.R13nException>());
+      }
     });
   });
 }
