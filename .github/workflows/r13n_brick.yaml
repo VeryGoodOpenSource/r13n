@@ -1,4 +1,5 @@
 name: 🧱🪝 R13n Brick Hooks 
+publish_to: 'none'
 
 on: pull_request
 
