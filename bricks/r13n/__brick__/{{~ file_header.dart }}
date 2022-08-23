@@ -1,4 +1,3 @@
 {{> copyright.dart }}
 
 {{> generated_comment.dart }}
-{{> ignored_lint_rules.dart }}

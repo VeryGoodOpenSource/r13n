@@ -6,7 +6,6 @@
 // https://opensource.org/licenses/MIT.
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
 
 import 'package:flutter/widgets.dart';
 import 'package:r13n/r13n.dart';
