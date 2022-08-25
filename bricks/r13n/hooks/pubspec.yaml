@@ -1,0 +1,14 @@
+name: r13n_hooks
+
+environment:
+  sdk: ">=2.16.0 <3.0.0"
+
+dependencies:
+  mason: ^0.1.0-dev
+  meta: ^1.8.0
+  path: ^1.8.2
+  yaml: ^3.1.1
+
+dev_dependencies:
+  test: ^1.21.1
+  mocktail: ^0.3.0

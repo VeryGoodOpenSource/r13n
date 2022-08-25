@@ -1,0 +1,16 @@
+{{> file_header.dart }}
+
+import 'package:r13n/r13n.dart';
+import 'app_regionalizations.g.dart';
+
+class AppRegionalizations{{#pascalCase}}{{regions.code}}{{/pascalCase}} extends AppRegionalizations {
+  const AppRegionalizations{{#pascalCase}}{{regions.code}}{{/pascalCase}}()
+      : super(
+          region: const Region(regionalCode: '{{#lowerCase}}{{regions.code}}{{/lowerCase}}'),
+        );
+
+  {{#regions.values}}
+  @override
+  String get {{key}} => '{{{value}}}';
+  {{/regions.values}}
+}

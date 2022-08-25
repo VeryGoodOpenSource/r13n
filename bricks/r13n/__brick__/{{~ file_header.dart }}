@@ -1,0 +1,3 @@
+{{> copyright.dart }}
+
+{{> generated_comment.dart }}

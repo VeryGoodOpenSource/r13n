@@ -4,52 +4,44 @@ import 'package:r13n/r13n.dart';
 
 void main() {
   runApp(
-    const MaterialApp(
-      home: ExamplePage(),
-    ),
+    const MaterialApp(home: _ExamplePage()),
   );
 }
 
-class ExamplePage extends StatefulWidget {
-  const ExamplePage({super.key});
+class _ExamplePage extends StatefulWidget {
+  const _ExamplePage();
 
   @override
-  State<ExamplePage> createState() => _ExamplePageState();
+  State<_ExamplePage> createState() => _ExamplePageState();
 }
 
-class _ExamplePageState extends State<ExamplePage> {
-  late Region region;
-
-  @override
-  void initState() {
-    super.initState();
-    region = Region.fromPlatform();
-  }
+class _ExamplePageState extends State<_ExamplePage> {
+  var _region = Region.fromPlatform();
 
   @override
   Widget build(BuildContext context) {
     return Regionalizations(
-      region: region,
+      region: _region,
       delegates: const [AppRegionalizations.delegate],
       child: Builder(
         builder: (context) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(Regionalizations.regionOf(context).regionalCode),
+              title: Text(context.r13n.region.regionalCode),
             ),
             body: Center(
               child: Column(
                 children: [
                   DropdownButton<Region>(
-                    value: Regionalizations.regionOf(context),
+                    value: context.r13n.region,
                     items: const [
                       DropdownMenuItem(
                         value: Region(regionalCode: 'es'),
                         child: Text('Spain'),
                       ),
                       DropdownMenuItem(
-                        value: Region(regionalCode: 'uk'),
-                        child: Text('United Kingdom'),
+                        value: Region(regionalCode: 'gb'),
+                        child: Text('Great Britain'),
                       ),
                       DropdownMenuItem(
                         value: Region(regionalCode: 'us'),
@@ -58,7 +50,7 @@ class _ExamplePageState extends State<ExamplePage> {
                     ],
                     onChanged: (value) {
                       if (value == null) return;
-                      setState(() => region = value);
+                      setState(() => _region = value);
                     },
                   ),
                   Text('Support email: ${context.r13n.supportEmail}'),
