@@ -13,6 +13,8 @@
 
 A Flutter package that makes regionalization easy. Heavily inspired by [flutter_localizations][flutter_localizations_link] and [intl][intl_pub_link].
 
+Similar to `l10n` which is short for localization, this package is called `r13n` as shorthand for regionalization.
+
 Developed with 💙 by [Very Good Ventures][very_good_ventures_link] 🦄
 
 ## What is regionalization?
