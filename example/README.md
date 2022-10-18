@@ -63,7 +63,7 @@ dart pub global activate mason_cli
 4. Then, install the `r13n` brick globally.
 
 ```
-mason add r13n -g
+mason add -g r13n
 ```
 
 
