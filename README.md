@@ -31,7 +31,7 @@ The `r13n` package can and should be used in conjunction with l10n. `r13n` is an
 
 ## How it works ⚙️
 
-Similar to l10n, the `r13n` package uses a `.arb` files to house the region-specific configurations.
+Similar to l10n, the `r13n` package uses `.arb` files to house the region-specific configurations.
 
 The arb file contains strings for region-specific values. The `r13n` brick is used to generate compile-safe Dart code in order to access the correct versions of each value based on the user's region.
 
