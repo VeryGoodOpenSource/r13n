@@ -1,7 +1,11 @@
+# 0.1.0-dev.3
+
+- fix: use `super.key` in generated `AppRegionalizations`
+
 # 0.1.0-dev.2
 
-- Includes VGV copyright notice on generated files.
+- chore: includes VGV copyright notice on generated files
 
 # 0.1.0-dev.1
 
-- Includes initial brick to generate regionalization (r13n) code from arb filed.
+- feat: initial brick to generate regionalization (r13n) code from arb files
