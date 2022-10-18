@@ -13,7 +13,7 @@
 
 A Flutter package that makes regionalization easy. Heavily inspired by [flutter_localizations][flutter_localizations_link] and [intl][intl_pub_link].
 
-Similar to `l10n` which is short for localization, this package is called `r13n` as shorthand for regionalization.
+Similar to l10n which is short for localization, this package is called `r13n` as shorthand for regionalization.
 
 Developed with 💙 by [Very Good Ventures][very_good_ventures_link] 🦄
 
@@ -23,15 +23,15 @@ Regionalization helps you display text in the app based on a person's region.
 
 Example: Say your app’s users are in the US and the UK. On your support page, you want to display the correct support email based on the user’s region. You can use the `r13n` package to display support.uk@mycompany.com to users in the UK and support.us@mycompany.com to users in the US.
 
-Similarly, localization (l10n) helps you display translations based on the user’s locale.
+Similarly, l10n helps you display translations based on the user’s locale.
 
 Example: When using l10n, your app will display text in the user’s preferred language.
 
-The `r13n` package can and should be used in conjunction with `l10n`. `r13n` is an additional mechanism to personalize information presented to users in an app.
+The `r13n` package can and should be used in conjunction with l10n. `r13n` is an additional mechanism to personalize information presented to users in an app.
 
 ## How it works ⚙️
 
-Similar to `l10n`, the `r13n` package uses a `.arb` files to house the region-specific configurations.
+Similar to l10n, the `r13n` package uses a `.arb` files to house the region-specific configurations.
 
 The arb file contains strings for region-specific values. The `r13n` brick is used to generate compile-safe Dart code in order to access the correct versions of each value based on the user's region.
 
