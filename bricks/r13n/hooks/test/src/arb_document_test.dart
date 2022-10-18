@@ -14,12 +14,14 @@ void main() {
 
       setUp(() {
         arbFile = _MockFile();
-        when(() => arbFile.readAsString()).thenAnswer((_) async => '''
+        when(() => arbFile.readAsString()).thenAnswer(
+          (_) async => '''
 {
     "@@region": "us",
     "aValue": "A Value"
 }
-''');
+''',
+        );
       });
 
       test('throws AssertionError when reading a non arb file', () {
@@ -30,38 +32,46 @@ void main() {
       });
 
       test('into a document', () async {
-        await IOOverrides.runZoned(() async {
-          final document = await ArbDocument.read('test.arb');
+        await IOOverrides.runZoned(
+          () async {
+            final document = await ArbDocument.read('test.arb');
 
-          verify(() => arbFile.readAsString()).called(1);
+            verify(() => arbFile.readAsString()).called(1);
 
-          expect(document.path, equals('test.arb'));
-          expect(document.region, equals('us'));
+            expect(document.path, equals('test.arb'));
+            expect(document.region, equals('us'));
 
-          expect(document.regionalizedValues.length, equals(1));
-          expect(document.regionalizedValues.first.key, equals('aValue'));
-          expect(document.regionalizedValues.first.value, equals('A Value'));
+            expect(document.regionalizedValues.length, equals(1));
+            expect(document.regionalizedValues.first.key, equals('aValue'));
+            expect(document.regionalizedValues.first.value, equals('A Value'));
 
-          expect(document.values.length, equals(2));
-        }, createFile: (path) => arbFile);
+            expect(document.values.length, equals(2));
+          },
+          createFile: (path) => arbFile,
+        );
       });
 
       test('fails to parse region', () async {
-        await IOOverrides.runZoned(() async {
-          when(() => arbFile.readAsString()).thenAnswer((_) async => '''
+        await IOOverrides.runZoned(
+          () async {
+            when(() => arbFile.readAsString()).thenAnswer(
+              (_) async => '''
 {
     "aValue": "A Value"
 }
-''');
-          final document = await ArbDocument.read('test.arb');
+''',
+            );
+            final document = await ArbDocument.read('test.arb');
 
-          verify(() => arbFile.readAsString()).called(1);
+            verify(() => arbFile.readAsString()).called(1);
 
-          expect(
-            () => document.region,
-            throwsA(isA<ArbMissingRegionTagException>()),
-          );
-        }, createFile: (path) => arbFile);
+            expect(
+              () => document.region,
+              throwsA(isA<ArbMissingRegionTagException>()),
+            );
+          },
+          createFile: (path) => arbFile,
+        );
       });
     });
   });
