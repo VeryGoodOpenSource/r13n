@@ -17,7 +17,7 @@ Similar to `l10n` which is short for localization, this package is called `r13n`
 
 Developed with 💙 by [Very Good Ventures][very_good_ventures_link] 🦄
 
-## What is regionalization?
+## What is regionalization? 📍
 
 Regionalization helps you display text in the app based on a person's region.
 
@@ -29,7 +29,7 @@ Example: When using l10n, your app will display text in the user’s preferred l
 
 The `r13n` package can and should be used in conjunction with `l10n`. `r13n` is an additional mechanism to personalize information presented to users in an app.
 
-## How it works
+## How it works ⚙️
 
 Similar to `l10n`, the `r13n` package uses a `.arb` files to house the region-specific configurations.
 
@@ -142,7 +142,7 @@ For more information, see the [example][example_link], the [r13n brick][brickhub
 [brickhub_r13n_link]: https://brickhub.dev/bricks/r13n
 [ci_badge]: https://github.com/VeryGoodOpenSource/r13n/actions/workflows/main.yaml/badge.svg
 [ci_link]: https://github.com/VeryGoodOpenSource/r13n/actions/workflows/main.yaml
-[coverage_badge]: https://raw.githubusercontent.com/VeryGoodOpenSource/r13n/main/packages/r13n/coverage_badge.svg
+[coverage_badge]: https://raw.githubusercontent.com/VeryGoodOpenSource/r13n/main/coverage_badge.svg
 [example_link]: https://github.com/VeryGoodOpenSource/r13n/tree/main/example
 [flutter_localizations_link]: https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html
 [github_r13n_link]: https://github.com/VeryGoodOpenSource/r13n
