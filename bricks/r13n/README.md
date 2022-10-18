@@ -28,7 +28,7 @@ template-arb-file: app_us.arb
 │   │   └── app_us.arb
 ```
 
-3. Following, add the regionalised strings to your `.arb` file:
+3. Following, add the regionalized strings to your `.arb` file:
 
 `app_us.arb`
 
