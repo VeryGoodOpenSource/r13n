@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:mason/mason.dart';
-import 'dart:io';
 
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
@@ -122,11 +122,11 @@ class ArbDocument {
     assert(path.endsWith(extension), 'File is not a valid arb file: $path');
 
     final file = File(path);
-    final json = await file.readAsString(encoding: utf8);
+    final json = await file.readAsString();
     final content = jsonDecode(json) as Map<String, dynamic>;
 
     final values = content.entries
-        .map((e) => ArbValue(key: e.key, value: e.value))
+        .map((e) => ArbValue(key: e.key, value: e.value as String))
         .toList();
 
     return ArbDocument._(path: path, values: values);
@@ -165,17 +165,15 @@ abstract class R13nException implements Exception {
 }
 
 class YamlNotFoundException extends R13nException {
-  YamlNotFoundException(Object error)
+  YamlNotFoundException(super.error)
       : super(
-          error,
           message: 'No r13n.yaml found.',
         );
 }
 
 class ArbMissingRegionTagException extends R13nException {
-  const ArbMissingRegionTagException(Object error)
+  const ArbMissingRegionTagException(super.error)
       : super(
-          error,
           message:
               'Missing region tag in arb file, make sure to include @@region',
         );

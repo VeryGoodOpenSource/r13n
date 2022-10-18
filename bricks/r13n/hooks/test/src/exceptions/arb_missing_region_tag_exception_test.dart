@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:test/test.dart';
 
 import '../../../pre_gen.dart';
@@ -18,7 +20,7 @@ void main() {
       expect(
         error.toString(),
         equals(
-          'ArbMissingRegionTagException: Missing region tag in arb file, make sure to include @@region',
+          '''ArbMissingRegionTagException: Missing region tag in arb file, make sure to include @@region''',
         ),
       );
     });

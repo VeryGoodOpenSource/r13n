@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:test/test.dart';
 
 import '../../pre_gen.dart';
@@ -15,7 +17,7 @@ void main() {
       test('returns normally', () {
         final arbValue = ArbValue(key: 'key', value: 'value');
 
-        expect(() => arbValue.toMap(), returnsNormally);
+        expect(arbValue.toMap, returnsNormally);
       });
 
       test('converts successfuly', () {
