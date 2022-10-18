@@ -25,10 +25,12 @@ void main() {
 
     setUp(() {
       configFile = _MockFile();
-      when(() => configFile.readAsString()).thenAnswer((_) async => '''
+      when(() => configFile.readAsString()).thenAnswer(
+        (_) async => '''
 arb-dir: ARB_DIR
 template-arb-file: TEMPLATE_ARB_FILE
-''');
+''',
+      );
       arbDir = _MockDirectory();
 
       final fileSystemEntity = _MockFileSystemEntity();
@@ -36,12 +38,14 @@ template-arb-file: TEMPLATE_ARB_FILE
       when(() => arbDir.listSync()).thenReturn([fileSystemEntity]);
 
       arbFile = _MockFile();
-      when(() => arbFile.readAsString()).thenAnswer((_) async => '''
+      when(() => arbFile.readAsString()).thenAnswer(
+        (_) async => '''
 {
     "@@region": "us",
     "aValue": "A Value"
 }
-''');
+''',
+      );
 
       logger = _MockLogger();
       hookContext = _MockHookContext();
@@ -49,11 +53,12 @@ template-arb-file: TEMPLATE_ARB_FILE
     });
 
     test('returns normally', () async {
-      Map<String, dynamic> vars = {};
+      var vars = <String, dynamic>{};
 
       when(() => hookContext.vars = any()).thenAnswer((invocation) {
         if (invocation.isGetter) return vars;
-        return vars = invocation.positionalArguments.first;
+        return vars =
+            invocation.positionalArguments.first as Map<String, dynamic>;
       });
 
       await IOOverrides.runZoned(
