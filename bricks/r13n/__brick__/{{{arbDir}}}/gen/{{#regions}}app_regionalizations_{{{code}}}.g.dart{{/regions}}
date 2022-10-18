@@ -4,7 +4,7 @@ import 'package:r13n/r13n.dart';
 import 'app_regionalizations.g.dart';
 
 class AppRegionalizations{{#pascalCase}}{{regions.code}}{{/pascalCase}} extends AppRegionalizations {
-  const AppRegionalizations{{#pascalCase}}{{regions.code}}{{/pascalCase}}()
+  const AppRegionalizations{{#pascalCase}}{{regions.code}}{{/pascalCase}}({super.key})
       : super(
           region: const Region(regionalCode: '{{#lowerCase}}{{regions.code}}{{/lowerCase}}'),
         );
