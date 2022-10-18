@@ -59,7 +59,7 @@ void main() {
         () {
           expectLater(
             () => post_gen.run(hookContext),
-            throwsA(isA<Exception>()),
+            throwsException,
           );
         },
         runProcess: process.run,
