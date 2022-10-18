@@ -11,7 +11,7 @@ import 'package:r13n/r13n.dart';
 import 'app_regionalizations.g.dart';
 
 class AppRegionalizationsGb extends AppRegionalizations {
-  const AppRegionalizationsGb()
+  const AppRegionalizationsGb({super.key})
       : super(
           region: const Region(regionalCode: 'gb'),
         );
