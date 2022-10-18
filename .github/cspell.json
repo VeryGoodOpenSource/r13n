@@ -14,5 +14,12 @@
       "description": "Forbidden VGV Spellings"
     }
   ],
-  "useGitignore": true
+  "useGitignore": true,
+  "words": [
+    "regionalization",
+    "regionalizations",
+    "regionalized",
+    "xcworkspace",
+    "xcassets"
+  ]
 }
