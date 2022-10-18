@@ -44,17 +44,26 @@ void main() {
     });
 
     test('returns normally', () {
-      post_gen.ProcessOverrides.runZoned(() {
-        expect(() => post_gen.run(hookContext), returnsNormally);
-      }, runProcess: process.run);
+      post_gen.ProcessOverrides.runZoned(
+        () {
+          expect(() => post_gen.run(hookContext), returnsNormally);
+        },
+        runProcess: process.run,
+      );
     });
 
     test('throws exception if format fails', () {
       when(() => processResult.exitCode).thenReturn(ExitCode.osError.code);
 
-      post_gen.ProcessOverrides.runZoned(() {
-        expectLater(() => post_gen.run(hookContext), throwsA(isA<Exception>()));
-      }, runProcess: process.run);
+      post_gen.ProcessOverrides.runZoned(
+        () {
+          expectLater(
+            () => post_gen.run(hookContext),
+            throwsA(isA<Exception>()),
+          );
+        },
+        runProcess: process.run,
+      );
     });
   });
 }
