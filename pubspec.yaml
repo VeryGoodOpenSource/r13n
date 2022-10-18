@@ -1,6 +1,6 @@
 name: r13n
 description: A package that enables region-specific configurations (regionalization). Built by Very Good Ventures.
-version: 0.1.0-dev.1
+version: 0.1.0-dev.2
 homepage: https://github.com/VeryGoodOpenSource/r13n
 repository: https://github.com/VeryGoodOpenSource/r13n
 issue_tracker: https://github.com/VeryGoodOpenSource/r13n/issues

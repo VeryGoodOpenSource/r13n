@@ -1,7 +1,7 @@
 # 🌐 r13n
 
-[![Very Good Ventures][logo_white]][very_good_ventures_link_dark]
 [![Very Good Ventures][logo_black]][very_good_ventures_link_light]
+[![Very Good Ventures][logo_white]][very_good_ventures_link_dark]
 
 [![ci][ci_badge]][ci_link]
 [![coverage][coverage_badge]][ci_link]
