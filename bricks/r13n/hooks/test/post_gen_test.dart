@@ -22,16 +22,26 @@ class _MockProcess extends Mock implements _TestProcess {}
 
 class _MockProcessResult extends Mock implements ProcessResult {}
 
+class _MockLogger extends Mock implements Logger {}
+
+class _MockProgress extends Mock implements Progress {}
+
 void main() {
   group('post_gen', () {
     late HookContext hookContext;
+    late Logger logger;
+    late Progress progress;
     late _TestProcess process;
     late ProcessResult processResult;
 
     setUp(() {
       hookContext = _MockHookContext();
+      logger = _MockLogger();
+      progress = _MockProgress();
       process = _MockProcess();
       processResult = _MockProcessResult();
+      when(() => hookContext.logger).thenReturn(logger);
+      when(() => logger.progress(any())).thenReturn(progress);
       when(() => processResult.exitCode).thenReturn(ExitCode.success.code);
       when(
         () => process.run(

@@ -1,0 +1,3 @@
+dependency_overrides:
+  r13n:
+    path: ../

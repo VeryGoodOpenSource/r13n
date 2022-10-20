@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:mason/mason.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
+
 import '../pre_gen.dart' as pre_gen;
 
 class _MockHookContext extends Mock implements HookContext {}
@@ -63,7 +65,7 @@ template-arb-file: TEMPLATE_ARB_FILE
 
       await IOOverrides.runZoned(
         () async {
-          await pre_gen.run(hookContext);
+          await pre_gen.preGen(hookContext, ensureRuntimeCompatibility: (_) {});
 
           expect(
             vars,
@@ -98,12 +100,42 @@ template-arb-file: TEMPLATE_ARB_FILE
       );
     });
 
+    test('exits when an R13nCompatibilityException occurs', () async {
+      final cwd = Directory.current;
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir;
+      File(path.join(tempDir.path, 'pubspec.yaml')).writeAsStringSync('''
+name: example
+version: 0.1.0+1
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+''');
+      final exitCalls = <int>[];
+      await pre_gen.preGen(hookContext, exit: exitCalls.add);
+      expect(exitCalls, equals([1]));
+      Directory.current = cwd;
+      tempDir.delete(recursive: true).ignore();
+    });
+
     test('when it fails, throws a R13nException', () async {
+      final cwd = Directory.current;
+      final tempDir = Directory.systemTemp.createTempSync();
+      Directory.current = tempDir;
+      File(path.join(tempDir.path, 'pubspec.yaml')).writeAsStringSync('''
+name: example
+version: 0.1.0+1
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+dependencies:
+  r13n: "${pre_gen.compatibleR13nVersion}"
+''');
       try {
-        await pre_gen.preGen(hookContext);
+        await pre_gen.run(hookContext);
       } catch (err) {
         expect(err, isA<pre_gen.R13nException>());
       }
+      Directory.current = cwd;
+      tempDir.delete(recursive: true).ignore();
     });
   });
 }

@@ -7,7 +7,7 @@ import '../../../pre_gen.dart';
 void main() {
   group('ArbMissingRegionTagException', () {
     test('can be instantiated', () {
-      final error = ArbMissingRegionTagException(Object());
+      final error = ArbMissingRegionTagException();
       expect(error, isA<ArbMissingRegionTagException>());
       expect(
         error.message,
@@ -16,7 +16,7 @@ void main() {
     });
 
     test('toString() ', () {
-      final error = ArbMissingRegionTagException(Object());
+      final error = ArbMissingRegionTagException();
       expect(
         error.toString(),
         equals(
