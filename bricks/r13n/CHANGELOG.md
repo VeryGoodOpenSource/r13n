@@ -1,3 +1,7 @@
+# 0.1.0-dev.4
+
+- feat: add runtime compatibility check on `package:r13n`
+
 # 0.1.0-dev.3
 
 - fix: use `super.key` in generated `AppRegionalizations`
