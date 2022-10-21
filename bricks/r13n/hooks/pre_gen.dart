@@ -1,17 +1,31 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io' as io;
 import 'dart:io';
 
 import 'package:mason/mason.dart';
-
 import 'package:path/path.dart' as path;
+import 'package:pubspec_parse/pubspec_parse.dart';
 import 'package:yaml/yaml.dart';
+
+typedef Exit = void Function(int);
 
 Future<void> run(HookContext context) async => preGen(context);
 
-Future<void> preGen(HookContext context) async {
-  final configuration = await R13nConfiguration.read();
+Future<void> preGen(
+  HookContext context, {
+  void Function(io.Directory) ensureRuntimeCompatibility =
+      ensureRuntimeCompatibility,
+  Exit exit = io.exit,
+}) async {
+  try {
+    ensureRuntimeCompatibility(Directory.current);
+  } on R13nCompatibilityException catch (error) {
+    context.logger.err(error.message);
+    return exit(1);
+  }
 
+  final configuration = await R13nConfiguration.read();
   final regions = <Map<String, dynamic>>[];
   String? fallbackRegion;
 
@@ -86,8 +100,8 @@ class R13nConfiguration {
       final content = await file.readAsString();
       final yaml = loadYaml(content) as YamlMap;
       return R13nConfiguration._fromYamlMap(yaml);
-    } on FileSystemException catch (error) {
-      throw YamlNotFoundException(error);
+    } on FileSystemException catch (_) {
+      throw YamlNotFoundException();
     }
   }
 
@@ -137,7 +151,7 @@ class ArbDocument {
       return values.firstWhere((value) => value.key == '@@region').value;
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(
-        ArbMissingRegionTagException(error),
+        const ArbMissingRegionTagException(),
         stackTrace,
       );
     }
@@ -151,12 +165,7 @@ class ArbDocument {
 }
 
 abstract class R13nException implements Exception {
-  const R13nException(
-    this.error, {
-    required this.message,
-  });
-
-  final Object error;
+  const R13nException({required this.message});
 
   final String message;
 
@@ -165,16 +174,70 @@ abstract class R13nException implements Exception {
 }
 
 class YamlNotFoundException extends R13nException {
-  YamlNotFoundException(super.error)
+  YamlNotFoundException()
       : super(
           message: 'No r13n.yaml found.',
         );
 }
 
 class ArbMissingRegionTagException extends R13nException {
-  const ArbMissingRegionTagException(super.error)
+  const ArbMissingRegionTagException()
       : super(
           message:
               'Missing region tag in arb file, make sure to include @@region',
         );
+}
+
+/// {@template r13n_compatibility_exception}
+/// An exception thrown when the current version of the r13n brick
+/// is incompatible with the r13n runtime being used.
+/// {@endtemplate}
+class R13nCompatibilityException extends R13nException {
+  /// {@macro r13n_compatibility_exception}
+  const R13nCompatibilityException({required super.message});
+
+  @override
+  String toString() => message;
+}
+
+/// The version range of package:r13n
+/// supported by the current version of the r13n brick.
+const compatibleR13nVersion = '>=0.1.0-dev.1 <0.1.0-dev.3';
+
+/// Whether current version of the r13n brick is compatible
+/// with the provided [version] of package:r13n.
+bool isCompatibleWithR13n(VersionConstraint version) {
+  return VersionConstraint.parse(compatibleR13nVersion).allowsAll(version);
+}
+
+/// Ensures that the current version of `brick:r13n` is compatible
+/// with the version of `package:r13n` used in the [cwd].
+void ensureRuntimeCompatibility(Directory cwd) {
+  final pubspecFile = File(path.join(cwd.path, 'pubspec.yaml'));
+  if (!pubspecFile.existsSync()) {
+    throw R13nCompatibilityException(
+      message: 'Expected to find a pubspec.yaml in ${cwd.path}.',
+    );
+  }
+
+  final pubspec = Pubspec.parse(pubspecFile.readAsStringSync());
+  final dependencyEntry = pubspec.dependencies.entries.where(
+    (e) => e.key == 'r13n',
+  );
+
+  if (dependencyEntry.isEmpty) {
+    throw const R13nCompatibilityException(
+      message: 'Expected to find a dependency on "r13n" in the pubspec.yaml',
+    );
+  }
+
+  final dependency = dependencyEntry.first.value;
+  if (dependency is HostedDependency) {
+    if (!isCompatibleWithR13n(dependency.version)) {
+      throw R13nCompatibilityException(
+        message:
+            '''The current version of "brick:r13n" requires "package:r13n" $compatibleR13nVersion.\nBecause the current version of "package:r13n" is ${dependency.version}, version solving failed.''',
+      );
+    }
+  }
 }

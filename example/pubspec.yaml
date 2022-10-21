@@ -1,7 +1,7 @@
 name: example
 description: Example that showcases r13n.
 version: 1.0.0+1
-publish_to: 'none'
+publish_to: "none"
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
@@ -9,8 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  r13n:
-    path: ../
+  r13n: 0.1.0-dev.2
 
 dev_dependencies:
   flutter_test:
