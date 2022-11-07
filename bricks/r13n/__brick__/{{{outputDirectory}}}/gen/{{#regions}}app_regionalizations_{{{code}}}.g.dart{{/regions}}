@@ -10,6 +10,9 @@ class AppRegionalizations{{#pascalCase}}{{regions.code}}{{/pascalCase}} extends 
         );
 
   {{#regions.values}}
+  {{#multipleArbFiles}}
+  /// source: [{{{source}}}];
+  {{/multipleArbFiles}}
   @override
   String get {{key}} => '{{{value}}}';
   {{/regions.values}}

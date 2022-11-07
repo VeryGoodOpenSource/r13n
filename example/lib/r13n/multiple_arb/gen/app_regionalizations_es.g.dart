@@ -18,6 +18,29 @@ class AppRegionalizationsEs extends AppRegionalizations {
           region: const Region(regionalCode: 'es'),
         );
 
+  
+  
+  /// source: [/lib/app/locacalization/app_es.arb];
+  
   @override
   String get supportEmail => 'es@verygood.ventures';
+  
+  
+  /// source: [/lib/app/locacalization/app_es.arb];
+  
+  @override
+  String get supportEmail2 => 'es@verygood.ventures';
+  
+  
+  /// source: [/lib/features/home/locacalization/home_es.arb];
+  
+  @override
+  String get homeTitle => 'Home';
+  
+  
+  /// source: [/lib/r13n/arb/app_es.arb];
+  
+  @override
+  String get supportEmail => 'es@verygood.ventures';
+  
 }

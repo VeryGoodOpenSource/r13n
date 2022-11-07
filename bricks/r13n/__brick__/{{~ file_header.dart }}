@@ -1,3 +1,5 @@
 {{> copyright.dart }}
 
 {{> generated_comment.dart }}
+
+{{> generated_lint_ignore.dart }}

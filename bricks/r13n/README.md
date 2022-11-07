@@ -18,18 +18,62 @@ A brick that generates regionalization (r13n) code from arb files. Designed to b
 
 1. Add a new yaml file to the root directory of the Flutter project called `r13n.yaml` with the following content:
 
+`Single arb-file per region` (with multiple-arb-files == false)
 ```yaml
 arb-dir: lib/r13n/arb
+output-directory: lib/r13n/arb/gen
 template-arb-file: app_us.arb
 ```
 
-2. Next, add an `app_us.arb` file in the same directory specified by `r13n.yaml`, which is `lib/r13n/arb`:
-
+`Support multiple-arb-files per region` (with multiple-arb-files == true)
+```yaml
+arb-dir: lib/r13n/arb
+template-arb-file: app_us.arb
+multiple-arb-files: true
+input-directory: lib
+input-file-pattern: _{{locale}}.arb
+output-directory: lib/r13n/gen
+output-file_name: app_regionalizations.g.dart
+preferred-supported-locales:
+  - es
+  - gb
+  - us
 ```
+
+2. Next, add an `app_us.arb` file in the same directory specified by `r13n.yaml`.
+
+Simple case (with multiple-arb-files == false), which is `lib/r13n/arb`:
+```
+lib
 ├── r13n
 │   ├── arb
 │   │   └── app_us.arb
 ```
+
+With **multiple-arb-files** per region (with multiple-arb-files == true)
+
+you can add anywhere inside the `lib` folder
+```
+lib
+├── app
+│   ├── app.dart
+│   └── locacalization
+│       ├── app_es.arb
+│       ├── app_gb.arb
+│       └── app_us.arb
+├── features
+│   ├── home
+│   │   ├── home.dart
+│   │   ├── locacalization
+│   │   │   ├── home_es.arb
+│   │   │   ├── home_gb.arb
+│   │   │   └── home_us.arb
+│   │   ├── navigation
+│   │   └── widgets
+│   └── intro
+├── main.dart
+```
+
 
 3. Following, add the regionalized strings to your `.arb` file:
 
@@ -51,12 +95,26 @@ $ mason make r13n --on-conflict overwrite
 6. You should see generated files in `lib/r13n/arb/gen`:
 
 ```
+<< with multiple-arb-files == false >>
+lib
 ├── r13n
 │   ├── arb
 │   │   ├── gen
 │   │   │   ├── app_regionalizations_us.g.dart
 │   │   │   └── app_regionalizations.g.dart
 │   │   ├── app_us.arb
+
+<< with multiple-arb-files == true >>
+lib
+├── ...
+├── main.dart
+└── r13n
+    ├── gen
+    │   ├── app_regionalizations.g.dart <-- main file
+    │   ├── app_regionalizations_es.g.dart <-- translation classes
+    │   ├── app_regionalizations_gb.g.dart <-- translation classes
+    │   └── app_regionalizations_us.g.dart <-- translation classes
+    └── r13n.dart
 ```
 
 ## Configuring `r13n.yaml` ⚙️

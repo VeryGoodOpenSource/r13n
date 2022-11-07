@@ -1,2 +1,15 @@
+# default
 arb-dir: lib/r13n/arb
 template-arb-file: app_us.arb
+# output-directory: lib/r13n/arb/gen
+
+# support multiple-arb
+multiple-arb-files: true
+input-directory: lib
+input-file-pattern: _{{locale}}.arb
+output-directory: lib/r13n/multiple_arb
+output-file_name: app_regionalizations.g.dart
+preferred-supported-locales:
+  - es
+  - gb
+  - us

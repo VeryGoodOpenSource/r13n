@@ -18,6 +18,29 @@ class AppRegionalizationsGb extends AppRegionalizations {
           region: const Region(regionalCode: 'gb'),
         );
 
+  
+  
+  /// source: [/lib/app/locacalization/app_gb.arb];
+  
   @override
   String get supportEmail => 'gb@verygood.ventures';
+  
+  
+  /// source: [/lib/app/locacalization/app_gb.arb];
+  
+  @override
+  String get supportEmail2 => 'gb@verygood.ventures';
+  
+  
+  /// source: [/lib/features/home/locacalization/home_gb.arb];
+  
+  @override
+  String get homeTitle => 'Home';
+  
+  
+  /// source: [/lib/r13n/arb/app_gb.arb];
+  
+  @override
+  String get supportEmail => 'gb@verygood.ventures';
+  
 }

@@ -1,0 +1,4 @@
+bricks:
+  hello: 0.1.0+1
+  r13n:
+    path: ../bricks/r13n
