@@ -5,7 +5,6 @@ import 'dart:io';
 
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
-import 'package:pubspec_parse/pubspec_parse.dart';
 import 'package:yaml/yaml.dart';
 
 typedef Exit = void Function(int);
@@ -206,38 +205,42 @@ const compatibleR13nVersion = '>=0.1.0-dev.1 <0.1.0-dev.3';
 
 /// Whether current version of the r13n brick is compatible
 /// with the provided [version] of package:r13n.
-bool isCompatibleWithR13n(VersionConstraint version) {
-  return VersionConstraint.parse(compatibleR13nVersion).allowsAll(version);
+bool isCompatibleWithR13n(Version version) {
+  return VersionConstraint.parse(compatibleR13nVersion).allows(version);
 }
 
 /// Ensures that the current version of `brick:r13n` is compatible
 /// with the version of `package:r13n` used in the [cwd].
 void ensureRuntimeCompatibility(Directory cwd) {
-  final pubspecFile = File(path.join(cwd.path, 'pubspec.yaml'));
-  if (!pubspecFile.existsSync()) {
+  final lockFile = File(path.join(cwd.path, 'pubspec.lock'));
+  if (!lockFile.existsSync()) {
     throw R13nCompatibilityException(
-      message: 'Expected to find a pubspec.yaml in ${cwd.path}.',
+      message: 'Expected to find a pubspec.lock in ${cwd.path}.',
     );
   }
 
-  final pubspec = Pubspec.parse(pubspecFile.readAsStringSync());
-  final dependencyEntry = pubspec.dependencies.entries.where(
+  final content = lockFile.readAsStringSync();
+  final packages = (loadYaml(content) as YamlMap)['packages'] as YamlMap;
+  final dependencyEntry = packages.entries.where(
     (e) => e.key == 'r13n',
   );
 
   if (dependencyEntry.isEmpty) {
     throw const R13nCompatibilityException(
-      message: 'Expected to find a dependency on "r13n" in the pubspec.yaml',
+      message: '''
+Expected to find a dependency on "r13n" in the pubspec.lock
+
+Ensure the "r13n" package is added to your pubspec.yaml and run "flutter pub get" before running "mason make r13n".
+''',
     );
   }
 
-  final dependency = dependencyEntry.first.value;
-  if (dependency is HostedDependency) {
-    if (!isCompatibleWithR13n(dependency.version)) {
-      throw R13nCompatibilityException(
-        message:
-            '''The current version of "brick:r13n" requires "package:r13n" $compatibleR13nVersion.\nBecause the current version of "package:r13n" is ${dependency.version}, version solving failed.''',
-      );
-    }
+  final dependency = dependencyEntry.first.value as YamlMap;
+  if (!isCompatibleWithR13n(Version.parse(dependency['version'] as String))) {
+    throw R13nCompatibilityException(
+      message: '''
+The current version of "brick:r13n" requires "package:r13n" $compatibleR13nVersion.
+Because the current version of "package:r13n" is ${dependency['version']}, version solving failed.''',
+    );
   }
 }
