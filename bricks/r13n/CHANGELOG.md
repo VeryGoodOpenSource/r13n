@@ -1,3 +1,7 @@
+# 0.1.0-dev.5
+
+- fix: error when running mason make r13n
+
 # 0.1.0-dev.4
 
 - feat: add runtime compatibility check on `package:r13n`
