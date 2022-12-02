@@ -70,7 +70,6 @@ template-arb-file: TEMPLATE_ARB_FILE
           expect(
             vars,
             equals({
-              'currentYear': 2022,
               'regions': [
                 {
                   'code': 'us',
