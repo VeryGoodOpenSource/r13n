@@ -1,3 +1,7 @@
+# 0.1.0-dev.6
+
+- docs: remove copyright header from generated code
+
 # 0.1.0-dev.5
 
 - fix: error when running mason make r13n
