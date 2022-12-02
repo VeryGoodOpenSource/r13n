@@ -50,7 +50,6 @@ Future<void> preGen(
       .toList();
 
   context.vars = {
-    'currentYear': DateTime.now().year,
     'regions': regions,
     'getters': getters,
     'fallbackCode': fallbackRegion,
