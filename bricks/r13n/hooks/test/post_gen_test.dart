@@ -64,7 +64,7 @@ void main() {
       );
       verify(
         () => process.run(
-          'flutter',
+          'dart',
           ['format', arbDir],
           runInShell: true,
           workingDirectory: Directory.current.path,
