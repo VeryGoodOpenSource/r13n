@@ -54,15 +54,27 @@ void main() {
     });
 
     test('returns normally', () {
+      const arbDir = './arb/dir';
+      when(() => hookContext.vars).thenReturn({'arbDir': arbDir});
       post_gen.ProcessOverrides.runZoned(
         () {
           expect(() => post_gen.run(hookContext), returnsNormally);
         },
         runProcess: process.run,
       );
+      verify(
+        () => process.run(
+          'flutter',
+          ['format', arbDir],
+          runInShell: true,
+          workingDirectory: Directory.current.path,
+        ),
+      ).called(1);
     });
 
     test('throws exception if format fails', () {
+      const arbDir = './arb/dir';
+      when(() => hookContext.vars).thenReturn({'arbDir': arbDir});
       when(() => processResult.exitCode).thenReturn(ExitCode.osError.code);
 
       post_gen.ProcessOverrides.runZoned(
