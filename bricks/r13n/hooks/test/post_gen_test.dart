@@ -73,8 +73,7 @@ void main() {
     });
 
     test('throws exception if format fails', () {
-      const arbDir = './arb/dir';
-      when(() => hookContext.vars).thenReturn({'arbDir': arbDir});
+      when(() => hookContext.vars).thenReturn({'arbDir': './arb/dir'});
       when(() => processResult.exitCode).thenReturn(ExitCode.osError.code);
 
       post_gen.ProcessOverrides.runZoned(
