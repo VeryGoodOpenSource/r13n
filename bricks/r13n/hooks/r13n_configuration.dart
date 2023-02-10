@@ -11,9 +11,9 @@ class R13nConfiguration {
 
   R13nConfiguration._fromYamlMap(YamlMap map)
       : this._(
-    arbDir: map['arb-dir'] as String,
-    templateArbFile: map['template-arb-file'] as String,
-  );
+          arbDir: map['arb-dir'] as String,
+          templateArbFile: map['template-arb-file'] as String,
+        );
 
   static const _fileName = 'r13n.yaml';
 
@@ -35,6 +35,6 @@ class R13nConfiguration {
 class R13nYamlNotFoundException extends R13nException {
   R13nYamlNotFoundException()
       : super(
-    message: 'No r13n.yaml found.',
-  );
+          message: 'No r13n.yaml found.',
+        );
 }

@@ -31,7 +31,7 @@ void ensureRuntimeCompatibility(Directory cwd) {
   final content = lockFile.readAsStringSync();
   final packages = (loadYaml(content) as YamlMap)['packages'] as YamlMap;
   final dependencyEntry = packages.entries.where(
-        (e) => e.key == 'r13n',
+    (e) => e.key == 'r13n',
   );
 
   if (dependencyEntry.isEmpty) {

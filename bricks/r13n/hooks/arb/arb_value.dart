@@ -8,7 +8,7 @@ class ArbValue {
   final String value;
 
   Map<String, dynamic> toMap() => {
-    'key': key,
-    'value': value,
-  };
+        'key': key,
+        'value': value,
+      };
 }

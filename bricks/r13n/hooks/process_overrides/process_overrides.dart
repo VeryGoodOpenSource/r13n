@@ -25,9 +25,9 @@ abstract class ProcessOverrides {
 
   /// Runs [body] in a fresh [Zone] using the provided overrides.
   static R runZoned<R>(
-      R Function() body, {
-        RunProcess? runProcess,
-      }) {
+    R Function() body, {
+    RunProcess? runProcess,
+  }) {
     final overrides = _ProcessOverridesScope(runProcess);
     return _asyncRunZoned(body, zoneValues: {_token: overrides});
   }
@@ -40,11 +40,11 @@ const _asyncRunZoned = runZoned;
 
 /// Type definition for [Process.run].
 typedef RunProcess = Future<ProcessResult> Function(
-    String executable,
-    List<String> arguments, {
-    String? workingDirectory,
-    bool runInShell,
-    });
+  String executable,
+  List<String> arguments, {
+  String? workingDirectory,
+  bool runInShell,
+});
 
 class _ProcessOverridesScope extends ProcessOverrides {
   _ProcessOverridesScope(this._runProcess);
@@ -57,4 +57,3 @@ class _ProcessOverridesScope extends ProcessOverrides {
     return _runProcess ?? _previous?.runProcess ?? super.runProcess;
   }
 }
-
