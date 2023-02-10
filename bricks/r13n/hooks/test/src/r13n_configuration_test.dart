@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-import '../../pre_gen.dart';
+import '../../hooks.dart';
 
 class _MockFile extends Mock implements File {}
 
@@ -40,7 +40,7 @@ template-arb-file: TEMPLATE_ARB_FILE
         () async {
           await expectLater(
             R13nConfiguration.read,
-            throwsA(isA<YamlNotFoundException>()),
+            throwsA(isA<R13nYamlNotFoundException>()),
           );
 
           verifyNever(() => configFile.readAsString());

@@ -5,6 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 
+import '../hooks.dart';
 import '../pre_gen.dart' as pre_gen;
 
 class _MockHookContext extends Mock implements HookContext {}
@@ -140,7 +141,7 @@ sdks:
       try {
         await pre_gen.preGen(hookContext, exit: exitCalls.add);
       } catch (err) {
-        expect(err, isA<pre_gen.R13nException>());
+        expect(err, isA<R13nException>());
       }
       expect(exitCalls, equals([]));
       Directory.current = cwd;

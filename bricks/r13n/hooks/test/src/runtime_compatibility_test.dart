@@ -6,6 +6,7 @@ import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 
+import '../../hooks.dart';
 import '../../pre_gen.dart';
 
 void main() {

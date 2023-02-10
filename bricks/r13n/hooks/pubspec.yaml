@@ -4,7 +4,7 @@ environment:
   sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
-  mason: ^0.1.0-dev
+  mason: ^0.1.0-dev.41
   meta: ^1.8.0
   path: ^1.8.2
   pubspec_parse: ^1.2.0

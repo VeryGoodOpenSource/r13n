@@ -4,6 +4,7 @@ import 'package:mason/mason.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import '../post_gen.dart' as post_gen;
+import '../process_overrides/process_overrides.dart';
 
 class _TestProcess {
   Future<ProcessResult> run(
@@ -56,7 +57,7 @@ void main() {
     test('returns normally', () {
       const arbDir = './arb/dir';
       when(() => hookContext.vars).thenReturn({'arbDir': arbDir});
-      post_gen.ProcessOverrides.runZoned(
+      ProcessOverrides.runZoned(
         () {
           expect(() => post_gen.run(hookContext), returnsNormally);
         },
@@ -76,7 +77,7 @@ void main() {
       when(() => hookContext.vars).thenReturn({'arbDir': './arb/dir'});
       when(() => processResult.exitCode).thenReturn(ExitCode.osError.code);
 
-      post_gen.ProcessOverrides.runZoned(
+      ProcessOverrides.runZoned(
         () {
           expectLater(
             () => post_gen.run(hookContext),

@@ -2,6 +2,7 @@
 
 import 'package:test/test.dart';
 
+import '../../hooks.dart';
 import '../../pre_gen.dart';
 
 void main() {
