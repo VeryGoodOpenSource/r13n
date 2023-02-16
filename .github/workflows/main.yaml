@@ -1,5 +1,10 @@
 name: build
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+
 on:
   push:
     branches:
@@ -12,7 +17,10 @@ jobs:
   spell-check:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1
     with:
-      includes: "**/*.md"
+      includes: |
+        **/*.{md,yaml}
+        !.dart_tool/**/*.yaml
+        .*/**/*.yml
       modified_files_only: false
 
   r13n:
