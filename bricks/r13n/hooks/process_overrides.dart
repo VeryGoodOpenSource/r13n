@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:meta/meta.dart';
-
 /// This class facilitates overriding [Process.run].
 ///
 /// It should be extended by another class in client code with overrides
 /// that construct a custom implementation.
-@visibleForTesting
 abstract class ProcessOverrides {
   static final _token = Object();
 
