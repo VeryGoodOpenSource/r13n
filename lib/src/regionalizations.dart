@@ -69,9 +69,9 @@ class Region {
 class Regionalizations extends StatefulWidget {
   /// {@macro r13n.regionalizations.Regionalizations}
   const Regionalizations({
+    required this.region,
     super.key,
     this.child,
-    required this.region,
     this.delegates = const [],
   });
 
