@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import '../pre_gen.dart';
-import 'arb.dart';
+import '../hooks.dart';
 
 class ArbDocument {
   const ArbDocument._({

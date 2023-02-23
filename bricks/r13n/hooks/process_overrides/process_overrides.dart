@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:meta/meta.dart';
 
 /// This class facilitates overriding [Process.run].
+///
 /// It should be extended by another class in client code with overrides
 /// that construct a custom implementation.
 @visibleForTesting
@@ -16,9 +17,9 @@ abstract class ProcessOverrides {
   /// any [ProcessOverrides].
   ///
   /// See also:
+  ///
   /// * [ProcessOverrides.runZoned] to provide [ProcessOverrides]
   /// in a fresh [Zone].
-  ///
   static ProcessOverrides? get current {
     return Zone.current[_token] as ProcessOverrides?;
   }

@@ -73,14 +73,6 @@ Future<List<ArbDocument>> readArbDocuments(
   return Future.wait(arbPaths.map(ArbDocument.read));
 }
 
-class ArbMissingRegionTagException extends R13nException {
-  const ArbMissingRegionTagException()
-      : super(
-          message:
-              'Missing region tag in arb file, make sure to include @@region',
-        );
-}
-
 /// The version range of package:r13n
 /// supported by the current version of the r13n brick.
 const compatibleR13nVersion = '>=0.1.0-dev.1 <0.1.0-dev.3';

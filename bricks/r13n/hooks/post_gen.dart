@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:mason/mason.dart';
 
-import 'process_overrides/process_overrides.dart';
+import 'hooks.dart';
 
 Future<void> run(HookContext context) async {
   final runProcess = ProcessOverrides.current?.runProcess ?? Process.run;

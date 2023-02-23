@@ -2,8 +2,7 @@
 
 import 'package:test/test.dart';
 
-import '../../hooks.dart';
-import '../../pre_gen.dart';
+import '../../../hooks.dart';
 
 void main() {
   group('ArbValue', () {

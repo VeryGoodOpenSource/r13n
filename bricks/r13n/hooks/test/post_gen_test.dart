@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:mason/mason.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
+
+import '../hooks.dart';
 import '../post_gen.dart' as post_gen;
-import '../process_overrides/process_overrides.dart';
 
 class _TestProcess {
   Future<ProcessResult> run(

@@ -2,7 +2,7 @@
 
 import 'package:test/test.dart';
 
-import '../../../pre_gen.dart';
+import '../../../hooks.dart';
 
 void main() {
   group('ArbMissingRegionTagException', () {

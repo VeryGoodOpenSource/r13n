@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-import '../../hooks.dart';
-import '../../pre_gen.dart';
+import '../../../hooks.dart';
 
 class _MockFile extends Mock implements File {}
 

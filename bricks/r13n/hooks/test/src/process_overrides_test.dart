@@ -2,8 +2,7 @@ import 'dart:io';
 
 import 'package:test/test.dart';
 
-import '../../post_gen.dart';
-import '../../process_overrides/process_overrides.dart';
+import '../../hooks.dart';
 
 class _FakeProcess {
   Future<ProcessResult> run(
