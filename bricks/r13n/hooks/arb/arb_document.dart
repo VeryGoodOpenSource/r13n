@@ -11,6 +11,9 @@ class ArbDocument {
 
   static const extension = '.arb';
 
+  final String path;
+  final List<ArbValue> values;
+
   static Future<ArbDocument> read(String path) async {
     assert(path.endsWith(extension), 'File is not a valid arb file: $path');
 
@@ -38,7 +41,4 @@ class ArbDocument {
 
   Iterable<ArbValue> get regionalizedValues =>
       values.where((value) => !value.key.startsWith('@@'));
-
-  final String path;
-  final List<ArbValue> values;
 }

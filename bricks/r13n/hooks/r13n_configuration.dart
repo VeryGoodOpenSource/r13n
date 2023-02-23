@@ -4,16 +4,19 @@ import 'package:yaml/yaml.dart';
 import 'hooks.dart';
 
 class R13nConfiguration {
-  const R13nConfiguration._({
-    required this.arbDir,
-    required this.templateArbFile,
-  });
 
   R13nConfiguration._fromYamlMap(YamlMap map)
       : this._(
           arbDir: map['arb-dir'] as String,
           templateArbFile: map['template-arb-file'] as String,
         );
+  const R13nConfiguration._({
+    required this.arbDir,
+    required this.templateArbFile,
+  });
+
+  final String arbDir;
+  final String templateArbFile;
 
   static const _fileName = 'r13n.yaml';
 
@@ -27,8 +30,5 @@ class R13nConfiguration {
       throw R13nYamlNotFoundException();
     }
   }
-
-  final String arbDir;
-  final String templateArbFile;
 }
 
