@@ -4,7 +4,6 @@ import 'package:yaml/yaml.dart';
 import 'hooks.dart';
 
 class R13nConfiguration {
-
   R13nConfiguration._fromYamlMap(YamlMap map)
       : this._(
           arbDir: map['arb-dir'] as String,
@@ -31,4 +30,3 @@ class R13nConfiguration {
     }
   }
 }
-
