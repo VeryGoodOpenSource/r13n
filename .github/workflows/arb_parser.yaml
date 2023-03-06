@@ -7,11 +7,11 @@ concurrency:
 on:
   pull_request:
     paths:
-      - "bricks/r13n/hooks/packages/arb/**"
-      - ".github/workflows/arb.yaml"
+      - "bricks/r13n/hooks/packages/arb_parser/**"
+      - ".github/workflows/arb_parser.yaml"
 
 jobs:
   build:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
     with:
-      working_directory: bricks/r13n/hooks/packages/arb/
+      working_directory: bricks/r13n/hooks/packages/arb_parser/
