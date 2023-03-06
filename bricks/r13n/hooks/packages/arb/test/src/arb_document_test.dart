@@ -8,6 +8,26 @@ class _MockFile extends Mock implements File {}
 
 void main() {
   group('$ArbDocument', () {
+    const testPath = 'test.arb';
+
+    group('unnamed constructor', () {
+      test('returns normally', () {
+        expect(() => ArbDocument(path: testPath), returnsNormally);
+      });
+
+      test('sets path without alteration', () {
+        final document = ArbDocument(path: testPath);
+        expect(document.path, equals(testPath));
+      });
+
+      test('throws AssertionError when reading a non arb file', () {
+        expect(
+          () => ArbDocument(path: 'not-arb.png'),
+          throwsA(isA<AssertionError>()),
+        );
+      });
+    });
+
     group('reads', () {
       late File arbFile;
 
@@ -23,32 +43,12 @@ void main() {
             .thenAnswer((_) async => arbFileContent);
       });
 
-      test('throws AssertionError when reading a non arb file', () {
-        expect(
-          () => ArbDocument.read('foo.png'),
-          throwsA(isA<AssertionError>()),
-        );
-      });
-
       test('returns normally $ArbDocument', () async {
         await IOOverrides.runZoned(
           createFile: (path) => arbFile,
           () async {
-            await expectLater(
-              () => ArbDocument.read('test.arb'),
-              returnsNormally,
-            );
-          },
-        );
-      });
-
-      test('path remains unchanged', () async {
-        await IOOverrides.runZoned(
-          createFile: (path) => arbFile,
-          () async {
-            const path = 'test.arb';
-            final document = await ArbDocument.read(path);
-            expect(document.path, equals(path));
+            final document = ArbDocument(path: testPath);
+            await expectLater(document.read, returnsNormally);
           },
         );
       });
@@ -57,7 +57,8 @@ void main() {
         await IOOverrides.runZoned(
           createFile: (path) => arbFile,
           () async {
-            final document = await ArbDocument.read('test.arb');
+            final document = ArbDocument(path: testPath);
+            await document.read();
 
             expect(document.values.length, equals(2));
 
