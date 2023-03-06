@@ -24,8 +24,7 @@ class R13nCompatibilityException extends R13nException {
 /// with the version of `package:r13n` used in the [workingDirectory].
 void ensureRuntimeCompatibility(Directory workingDirectory) {
   final version = _r13nPackageVersion(workingDirectory);
-  final isCompatible =
-      VersionConstraint.parse(compatibleR13nVersion).allows(version);
+  final isCompatible = isCompatibleWithR13n(version);
 
   if (!isCompatible) {
     throw R13nCompatibilityException(
@@ -34,6 +33,13 @@ The current version of "brick:r13n" requires "package:r13n" $compatibleR13nVersi
 Because the current version of "package:r13n" is $version}, version solving failed.''',
     );
   }
+}
+
+/// Determines whether the [version] of `package:r13n` is compatible
+/// with the current version of `brick:r13n`.
+@visibleForTesting
+bool isCompatibleWithR13n(Version version) {
+  return VersionConstraint.parse(compatibleR13nVersion).allows(version);
 }
 
 /// Retrieves the version of package:r13n from the pubspec.lock at the
