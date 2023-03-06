@@ -30,7 +30,7 @@ void ensureRuntimeCompatibility(Directory workingDirectory) {
     throw R13nCompatibilityException(
       message: '''
 The current version of "brick:r13n" requires "package:r13n" $compatibleR13nVersion.
-Because the current version of "package:r13n" is $version}, version solving failed.''',
+Because the current version of "package:r13n" is $version, version solving failed.''',
     );
   }
 }
