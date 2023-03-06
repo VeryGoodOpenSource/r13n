@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 class _MockFile extends Mock implements File {}
 
 void main() {
-  group('R13nConfiguration', () {
+  group('$R13nConfiguration', () {
     late File configFile;
 
     setUp(() {
@@ -18,6 +18,7 @@ arb-dir: ARB_DIR
 template-arb-file: TEMPLATE_ARB_FILE
 ''',
       );
+      when(() => configFile.existsSync()).thenReturn(true);
     });
 
     test('read yaml configuration', () async {
@@ -34,7 +35,8 @@ template-arb-file: TEMPLATE_ARB_FILE
       );
     });
 
-    test('throws YamlNotFoundException when something goes wrong', () async {
+    test('throws $R13nYamlNotFoundException when something goes wrong',
+        () async {
       await IOOverrides.runZoned(
         () async {
           await expectLater(
