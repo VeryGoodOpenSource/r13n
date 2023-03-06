@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:mason/mason.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:path/path.dart' as path;
+import 'package:r13n_hooks/hooks.dart';
 import 'package:test/test.dart';
 
 import '../pre_gen.dart' as pre_gen;
@@ -140,7 +141,7 @@ sdks:
       try {
         await pre_gen.preGen(hookContext, exit: exitCalls.add);
       } catch (err) {
-        expect(err, isA<pre_gen.R13nException>());
+        expect(err, isA<R13nException>());
       }
       expect(exitCalls, equals([]));
       Directory.current = cwd;

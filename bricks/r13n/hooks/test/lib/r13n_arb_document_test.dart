@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:mocktail/mocktail.dart';
+import 'package:r13n_hooks/hooks.dart';
 import 'package:test/test.dart';
-
-import '../../lib/hooks.dart';
 
 class _MockFile extends Mock implements File {}
 
@@ -14,14 +13,6 @@ void main() {
 
       setUp(() {
         arbFile = _MockFile();
-        const arbFileContent = '''
-{
-    "@@region": "us",
-    "aValue": "A Value"
-}
-''';
-        when(() => arbFile.readAsString())
-            .thenAnswer((_) async => arbFileContent);
       });
 
       test('sets region to last @@region tag', () async {

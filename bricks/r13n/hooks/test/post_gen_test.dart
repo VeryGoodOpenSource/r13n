@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:mason/mason.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:r13n_hooks/hooks.dart';
 import 'package:test/test.dart';
 import '../post_gen.dart' as post_gen;
 
@@ -54,7 +55,7 @@ void main() {
     });
 
     test('returns normally', () {
-      post_gen.ProcessOverrides.runZoned(
+      ProcessOverrides.runZoned(
         () {
           expect(() => post_gen.run(hookContext), returnsNormally);
         },
@@ -65,7 +66,7 @@ void main() {
     test('throws exception if format fails', () {
       when(() => processResult.exitCode).thenReturn(ExitCode.osError.code);
 
-      post_gen.ProcessOverrides.runZoned(
+      ProcessOverrides.runZoned(
         () {
           expectLater(
             () => post_gen.run(hookContext),
