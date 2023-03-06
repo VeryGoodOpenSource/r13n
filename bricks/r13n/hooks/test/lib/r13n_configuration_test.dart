@@ -4,8 +4,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:r13n_hooks/hooks.dart';
 import 'package:test/test.dart';
 
-import '../../pre_gen.dart';
-
 class _MockFile extends Mock implements File {}
 
 void main() {

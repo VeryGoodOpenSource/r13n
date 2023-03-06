@@ -8,7 +8,7 @@ import 'package:r13n_hooks/hooks.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('R13nCompatibilityException', () {
+  group('$R13nCompatibilityException', () {
     test('toString override is correct', () {
       const message = 'test message';
       expect(
