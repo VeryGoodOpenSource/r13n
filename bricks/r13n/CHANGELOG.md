@@ -1,3 +1,7 @@
+# 0.1.0-dev.7
+
+- fix: only format arb directory in post_gen hook
+
 # 0.1.0-dev.6
 
 - docs: remove copyright header from generated code

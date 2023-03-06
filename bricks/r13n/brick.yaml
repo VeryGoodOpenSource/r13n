@@ -2,7 +2,7 @@ name: r13n
 description: A brick that generates regionalization (r13n) code from arb files. Built by Very Good Ventures.
 repository: https://github.com/VeryGoodOpenSource/r13n
 
-version: 0.1.0-dev.6
+version: 0.1.0-dev.7
 
 environment:
   mason: ">=0.1.0-dev.28 <0.1.0"
