@@ -4,6 +4,8 @@ environment:
   sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
+  arb:
+    path: packages/arb
   mason: ^0.1.0-dev
   meta: ^1.8.0
   path: ^1.8.2

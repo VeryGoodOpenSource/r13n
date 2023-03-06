@@ -1,11 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io' as io;
 import 'dart:io';
 
+import 'package:arb/arb.dart';
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
+
+import 'r13n_document.dart';
 
 typedef Exit = void Function(int);
 
@@ -57,20 +59,20 @@ Future<void> preGen(
   };
 }
 
-Future<List<ArbDocument>> readArbDocuments(
+Future<List<R13nArbDocument>> readArbDocuments(
   R13nConfiguration configuration,
 ) async {
   final arbPath = path.join(Directory.current.path, configuration.arbDir);
   final arbDirectory = Directory(arbPath);
-  final arbPaths = arbDirectory
-      .listSync()
-      .where(
+  final arbFileSystemEntities = arbDirectory.listSync().where(
         (fileSystemEntity) =>
             fileSystemEntity.path.endsWith(ArbDocument.extension),
-      )
-      .map((fileSystemEntity) => fileSystemEntity.path);
-
-  return Future.wait(arbPaths.map(ArbDocument.read));
+      );
+  final r13nDocuments = arbFileSystemEntities
+      .map((fileSystemEntity) => R13nArbDocument(path: fileSystemEntity.path))
+      .toList();
+  await Future.wait(r13nDocuments.map((document) => document.read()));
+  return r13nDocuments;
 }
 
 /// The classes below should be part of their own library, but Mason
@@ -107,61 +109,6 @@ class R13nConfiguration {
   final String templateArbFile;
 }
 
-class ArbValue {
-  const ArbValue({
-    required this.key,
-    required this.value,
-  });
-
-  final String key;
-  final String value;
-
-  Map<String, dynamic> toMap() => {
-        'key': key,
-        'value': value,
-      };
-}
-
-class ArbDocument {
-  const ArbDocument._({
-    required this.path,
-    required this.values,
-  });
-
-  static const extension = '.arb';
-
-  static Future<ArbDocument> read(String path) async {
-    assert(path.endsWith(extension), 'File is not a valid arb file: $path');
-
-    final file = File(path);
-    final json = await file.readAsString();
-    final content = jsonDecode(json) as Map<String, dynamic>;
-
-    final values = content.entries
-        .map((e) => ArbValue(key: e.key, value: e.value as String))
-        .toList();
-
-    return ArbDocument._(path: path, values: values);
-  }
-
-  String get region {
-    try {
-      return values.firstWhere((value) => value.key == '@@region').value;
-    } catch (error, stackTrace) {
-      Error.throwWithStackTrace(
-        const ArbMissingRegionTagException(),
-        stackTrace,
-      );
-    }
-  }
-
-  Iterable<ArbValue> get regionalizedValues =>
-      values.where((value) => !value.key.startsWith('@@'));
-
-  final String path;
-  final List<ArbValue> values;
-}
-
 abstract class R13nException implements Exception {
   const R13nException({required this.message});
 
@@ -175,14 +122,6 @@ class YamlNotFoundException extends R13nException {
   YamlNotFoundException()
       : super(
           message: 'No r13n.yaml found.',
-        );
-}
-
-class ArbMissingRegionTagException extends R13nException {
-  const ArbMissingRegionTagException()
-      : super(
-          message:
-              'Missing region tag in arb file, make sure to include @@region',
         );
 }
 

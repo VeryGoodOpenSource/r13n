@@ -26,7 +26,7 @@ void main() {
 
       test('throws AssertionError when reading a non arb file', () {
         expect(
-          () => ArbDocument.read('foo.png'),
+          () => R13nArbDocument.read('foo.png'),
           throwsA(isA<AssertionError>()),
         );
       });
@@ -34,7 +34,7 @@ void main() {
       test('into a document', () async {
         await IOOverrides.runZoned(
           () async {
-            final document = await ArbDocument.read('test.arb');
+            final document = await R13nArbDocument.read('test.arb');
 
             verify(() => arbFile.readAsString()).called(1);
 
@@ -61,7 +61,7 @@ void main() {
 }
 ''',
             );
-            final document = await ArbDocument.read('test.arb');
+            final document = await R13nArbDocument.read('test.arb');
 
             verify(() => arbFile.readAsString()).called(1);
 
