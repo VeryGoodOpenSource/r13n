@@ -41,6 +41,10 @@ void main() {
       progress = _MockProgress();
       process = _MockProcess();
       processResult = _MockProcessResult();
+      final vars = {
+        'arbDir': 'lib/l10n',
+      };
+      when(() => hookContext.vars).thenReturn(vars);
       when(() => hookContext.logger).thenReturn(logger);
       when(() => logger.progress(any())).thenReturn(progress);
       when(() => processResult.exitCode).thenReturn(ExitCode.success.code);
@@ -56,10 +60,10 @@ void main() {
 
     test('returns normally', () {
       ProcessOverrides.runZoned(
+        runProcess: process.run,
         () {
           expect(() => post_gen.run(hookContext), returnsNormally);
         },
-        runProcess: process.run,
       );
     });
 
@@ -67,13 +71,13 @@ void main() {
       when(() => processResult.exitCode).thenReturn(ExitCode.osError.code);
 
       ProcessOverrides.runZoned(
+        runProcess: process.run,
         () {
           expectLater(
             () => post_gen.run(hookContext),
             throwsException,
           );
         },
-        runProcess: process.run,
       );
     });
   });
