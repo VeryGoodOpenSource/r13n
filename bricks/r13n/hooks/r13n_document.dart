@@ -20,7 +20,7 @@ class R13nArbDocumentMissingRegionTagException extends R13nException {
 }
 
 /// {@template r13n_arb_document}
-/// A subset of an [ArbDocument].
+/// A special type of [ArbDocument] used for regionalization.
 ///
 /// An [R13nArbDocument] must have a region tag in the form of `@@region`. Its
 /// other values are considered as regionalized values, which are the values
