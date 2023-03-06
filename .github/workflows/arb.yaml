@@ -1,0 +1,17 @@
+name: package:arb
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - "bricks/hooks/packages/arb/**"
+      - ".github/workflows/arb.yaml"
+
+jobs:
+  build:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    with:
+      working_directory: bricks/hooks/packages/arb/
