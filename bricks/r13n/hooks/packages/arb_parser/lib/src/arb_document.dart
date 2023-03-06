@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:arb/arb.dart';
+import 'package:arb_parser/arb_parser.dart';
 
 /// {@template arb_document}
 /// An [ArbDocument] represents an arb file and its [values].

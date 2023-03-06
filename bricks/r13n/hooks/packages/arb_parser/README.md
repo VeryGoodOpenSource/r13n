@@ -1,9 +1,20 @@
-# Arb
+# arb_parser
 
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 [![License: MIT][license_badge]][license_link]
 
-A Very Good Project created by Very Good CLI.
+A simple `arb` file parser.
+
+```dart
+// Create the document.
+final document = ArbDocument('my-arb.arb');
+
+// Read the document.
+await document.read();
+
+// Access the list of values.
+document.values;
+```
 
 ## Installation 💻
 
@@ -21,16 +32,6 @@ Install it:
 ```sh
 dart pub get
 ```
-
----
-
-## Continuous Integration 🤖
-
-Arb comes with a built-in [GitHub Actions workflow][github_actions_link] powered by [Very Good Workflows][very_good_workflows_link] but you can also add your preferred CI/CD solution.
-
-Out of the box, on each pull request and push, the CI `formats`, `lints`, and `tests` the code. This ensures the code remains consistent and behaves correctly as you add functionality or make changes. The project uses [Very Good Analysis][very_good_analysis_link] for a strict set of analysis options used by our team. Code coverage is enforced using the [Very Good Workflows][very_good_coverage_link].
-
----
 
 ## Running Tests 🧪
 
@@ -65,4 +66,3 @@ open coverage/index.html
 [very_good_ventures_link]: https://verygood.ventures
 [very_good_ventures_link_light]: https://verygood.ventures#gh-light-mode-only
 [very_good_ventures_link_dark]: https://verygood.ventures#gh-dark-mode-only
-[very_good_workflows_link]: https://github.com/VeryGoodOpenSource/very_good_workflows

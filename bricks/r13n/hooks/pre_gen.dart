@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io' as io;
 import 'dart:io';
 
-import 'package:arb/arb.dart';
+import 'package:arb_parser/arb_parser.dart';
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
 

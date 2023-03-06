@@ -1,7 +1,6 @@
-
 import 'dart:collection';
 
-import 'package:arb/arb.dart';
+import 'package:arb_parser/arb_parser.dart';
 import 'package:r13n_hooks/hooks.dart';
 
 /// {@template r13n_arb_document_missing_region_tag_exception}

@@ -4,9 +4,8 @@ import 'dart:io';
 
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
+import 'package:r13n_hooks/hooks.dart';
 import 'package:test/test.dart';
-
-import '../../pre_gen.dart';
 
 void main() {
   group('R13nCompatibilityException', () {

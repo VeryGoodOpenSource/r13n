@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:arb/arb.dart';
+import 'package:arb_parser/arb_parser.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 

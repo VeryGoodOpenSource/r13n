@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:arb/arb.dart';
+import 'package:arb_parser/arb_parser.dart';
 import 'package:test/test.dart';
 
 void main() {

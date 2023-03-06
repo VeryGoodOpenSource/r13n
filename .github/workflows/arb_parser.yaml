@@ -1,4 +1,4 @@
-name: package:arb
+name: package:arb_parser
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

@@ -1,6 +1,5 @@
-name: arb
-description: A Very Good Project created by Very Good CLI.
-version: 0.1.0+1
+name: arb_parser
+description: A simple `arb` file parser.
 publish_to: none
 
 environment:
