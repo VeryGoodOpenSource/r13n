@@ -1,8 +1,8 @@
+
 import 'dart:collection';
 
 import 'package:arb/arb.dart';
-
-import 'pre_gen.dart';
+import 'package:r13n_hooks/hooks.dart';
 
 /// {@template r13n_arb_document_missing_region_tag_exception}
 /// Thrown when an [R13nArbDocument] does not have a region tag.

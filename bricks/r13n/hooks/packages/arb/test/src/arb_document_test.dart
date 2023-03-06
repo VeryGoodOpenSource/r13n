@@ -28,7 +28,7 @@ void main() {
       });
     });
 
-    group('reads', () {
+    group('read', () {
       late File arbFile;
 
       setUp(() {
