@@ -1,11 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:arb_parser/arb_parser.dart';
 import 'package:test/test.dart';
 
-import '../../pre_gen.dart';
-
 void main() {
-  group('ArbValue', () {
+  group('$ArbValue', () {
     test('can be instantiated', () {
       final arbValue = ArbValue(key: 'key', value: 'value');
 

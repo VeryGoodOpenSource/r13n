@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:mason/mason.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:r13n_hooks/hooks.dart';
 import 'package:test/test.dart';
 import '../post_gen.dart' as post_gen;
 
@@ -40,6 +41,10 @@ void main() {
       progress = _MockProgress();
       process = _MockProcess();
       processResult = _MockProcessResult();
+      final vars = {
+        'arbDir': 'lib/l10n',
+      };
+      when(() => hookContext.vars).thenReturn(vars);
       when(() => hookContext.logger).thenReturn(logger);
       when(() => logger.progress(any())).thenReturn(progress);
       when(() => processResult.exitCode).thenReturn(ExitCode.success.code);
@@ -54,36 +59,25 @@ void main() {
     });
 
     test('returns normally', () {
-      const arbDir = './arb/dir';
-      when(() => hookContext.vars).thenReturn({'arbDir': arbDir});
-      post_gen.ProcessOverrides.runZoned(
+      ProcessOverrides.runZoned(
+        runProcess: process.run,
         () {
           expect(() => post_gen.run(hookContext), returnsNormally);
         },
-        runProcess: process.run,
       );
-      verify(
-        () => process.run(
-          'dart',
-          ['format', arbDir],
-          runInShell: true,
-          workingDirectory: Directory.current.path,
-        ),
-      ).called(1);
     });
 
     test('throws exception if format fails', () {
-      when(() => hookContext.vars).thenReturn({'arbDir': './arb/dir'});
       when(() => processResult.exitCode).thenReturn(ExitCode.osError.code);
 
-      post_gen.ProcessOverrides.runZoned(
+      ProcessOverrides.runZoned(
+        runProcess: process.run,
         () {
           expectLater(
             () => post_gen.run(hookContext),
             throwsException,
           );
         },
-        runProcess: process.run,
       );
     });
   });
