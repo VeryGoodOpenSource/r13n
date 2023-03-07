@@ -157,5 +157,3 @@ For more information, see the [example][example_link], the [r13n brick][brickhub
 [very_good_ventures_link]: https://verygood.ventures/?utm_source=github
 [very_good_ventures_link_dark]: https://verygood.ventures/?utm_source=github#gh-dark-mode-only
 [very_good_ventures_link_light]: https://verygood.ventures/?utm_source=github#gh-light-mode-only
-
-Sign
