@@ -1,12 +1,13 @@
 name: r13n
-description: A package that enables region-specific configurations (regionalization). Built by Very Good Ventures.
+description: A package that enables region-specific configurations
+  (regionalization). Built by Very Good Ventures.
 version: 0.1.0-dev.2
 homepage: https://github.com/VeryGoodOpenSource/r13n
 repository: https://github.com/VeryGoodOpenSource/r13n
 issue_tracker: https://github.com/VeryGoodOpenSource/r13n/issues
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: ">=2.19.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -15,4 +16,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mason: 0.1.0-dev.46
+  path: ^1.8.2
   very_good_analysis: ^3.1.0
