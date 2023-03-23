@@ -4,21 +4,10 @@ import 'dart:io';
 
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
+import 'package:r13n_hooks/hooks.dart';
 import 'package:test/test.dart';
 
-import '../../pre_gen.dart';
-
 void main() {
-  group('R13nCompatibilityException', () {
-    test('toString override is correct', () {
-      const message = 'test message';
-      expect(
-        R13nCompatibilityException(message: message).toString(),
-        equals(message),
-      );
-    });
-  });
-
   group('isCompatibleWithR13n', () {
     test('returns true when the package:r13n version is compatible', () {
       final compatibleVersions = [
