@@ -4,8 +4,11 @@ import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 
+/// Objectives:
+///
+/// * Generate valid AppRegionalizations from the arb files
 void main() {
-  test('quick start', () async {
+  test('r13n brick generation test', () async {
     final tempDirectory = Directory.current.createTempSync();
 
     final arbPath = path.join(tempDirectory.path, 'lib', 'r13n', 'arb');
