@@ -1,8 +1,7 @@
 import 'dart:io';
 
+import 'package:r13n_hooks/hooks.dart';
 import 'package:test/test.dart';
-
-import '../../post_gen.dart';
 
 class _FakeProcess {
   Future<ProcessResult> run(
