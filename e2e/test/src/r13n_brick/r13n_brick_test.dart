@@ -15,7 +15,7 @@ const _sucessfulExitCode = 0;
 /// * Generate AppRegionalizations from arb files (`mason make r13n`)
 /// * Ensure the code is formatted (`dart format .`)
 /// * Ensure the code has no warnings/errors (`dart analyze .`)
-/// * Ensure AppRegionalizations members are valid and accessible
+/// * Ensure generated AppRegionalizations match the expected output (fixtures/gen/)
 void main() {
   test(
     'r13n brick generates successfully',
