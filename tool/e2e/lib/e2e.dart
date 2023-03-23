@@ -1,4 +1,2 @@
-/// A Very Good Project created by Very Good CLI.
+/// R13n's end-to-end testing package.
 library e2e;
-
-export 'src/e2e.dart';

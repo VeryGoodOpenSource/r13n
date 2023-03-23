@@ -1,12 +1,12 @@
-name: e2e
-description: R13n's end-to-end testing package.
+name: r13n_e2e
+description: A Very Good Project created by Very Good CLI.
+version: 0.1.0+1
 publish_to: none
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
 
 dev_dependencies:
-  mason: ^0.1.0-dev.46
-  path: ^1.8.3
+  mocktail: ^0.3.0
   test: ^1.19.2
   very_good_analysis: ^3.1.0
