@@ -11,7 +11,7 @@ const _sucessfulExitCode = 0;
 
 /// Objectives:
 ///
-/// * Generate AppRegionalizations `mason make r13n` from arb files
+/// * Generate AppRegionalizations from arb files (`mason make r13n`)
 /// * Ensure the code is formatted (`dart format .`)
 /// * Ensure the code has no warnings/errors (`dart analyze .`)
 /// * Ensure AppRegionalizations members are valid and accessible
@@ -20,7 +20,7 @@ void main() {
     'r13n brick generates successfully',
     timeout: const Timeout(Duration(minutes: 5)),
     () async {
-      final tempDirectory = Directory.current.createTempSync();
+      final tempDirectory = Directory.systemTemp.createTempSync();
 
       final arbPath = path.join(tempDirectory.path, 'lib', 'r13n', 'arb');
       Directory(arbPath).createSync(recursive: true);
@@ -48,10 +48,12 @@ void main() {
         ..writeAsStringSync(arbGbFileContent)
         ..createSync();
 
+      final arbDirectory = path.relative(arbPath, from: tempDirectory.path);
+      final templateArbFile = path.basename(arbUsPath);
       final r13nYamlPath = path.join(tempDirectory.path, 'r13n.yaml');
       final r13nYamlFileContent = '''
-arb-dir: ${path.relative(arbPath, from: tempDirectory.path)}
-template-arb-file: ${path.basename(arbUsPath)}
+arb-dir: $arbDirectory
+template-arb-file: $templateArbFile
 ''';
       File(r13nYamlPath)
         ..writeAsStringSync(r13nYamlFileContent)
@@ -105,11 +107,35 @@ dev_dependencies:
       final r13nBrick = Brick.path(r13nBrickPath);
       final r13nMasonGenerator = await MasonGenerator.fromBrick(r13nBrick);
       final directoryGeneratorTarget = DirectoryGeneratorTarget(tempDirectory);
-      await r13nMasonGenerator.hooks
-          .preGen(workingDirectory: tempDirectory.path);
-      await r13nMasonGenerator.generate(directoryGeneratorTarget);
-      await r13nMasonGenerator.hooks
-          .postGen(workingDirectory: tempDirectory.path);
+
+      var vars = <String, dynamic>{};
+      await r13nMasonGenerator.hooks.preGen(
+        workingDirectory: tempDirectory.path,
+        onVarsChanged: (newVars) => vars = newVars,
+      );
+
+      final files = await r13nMasonGenerator.generate(
+        directoryGeneratorTarget,
+        vars: vars,
+      );
+      final expectedGeneratedFilePaths = {
+        '$arbDirectory/gen/app_regionalizations.g.dart',
+        '$arbDirectory/gen/app_regionalizations_us.g.dart',
+        '$arbDirectory/gen/app_regionalizations_gb.g.dart',
+      };
+      expect(
+        files
+            .map((file) => path.relative(file.path, from: tempDirectory.path))
+            .toSet(),
+        equals(expectedGeneratedFilePaths),
+        reason:
+            'Generated files do not match the expected the generated files.',
+      );
+
+      await r13nMasonGenerator.hooks.postGen(
+        workingDirectory: tempDirectory.path,
+        vars: vars,
+      );
 
       final dartFormatResult = await Process.run(
         'dart',
@@ -148,6 +174,8 @@ dev_dependencies:
         reason:
             '''`dart analyze .` failed with exit code ${dartAnalyzeResult.exitCode} and stderr ${dartAnalyzeResult.stderr}''',
       );
+
+      tempDirectory.deleteSync(recursive: true);
     },
   );
 }
