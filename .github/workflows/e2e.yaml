@@ -47,4 +47,4 @@ jobs:
         run: flutter pub get
 
       - name: Run Tests
-        run: flutter pub run test ${{ matrix.test }} --run-skipped -t e2e
+        run: flutter pub run test ${{ matrix.test }}
