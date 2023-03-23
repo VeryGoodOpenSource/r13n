@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:crypto/crypto.dart';
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
@@ -137,6 +138,15 @@ dev_dependencies:
         vars: vars,
       );
 
+      final genFixturesPath =
+          path.join(Directory.current.path, 'test', 'fixtures', 'gen');
+      expect(
+        Directory('$arbDirectory/gen/'),
+        _DirectoryContentMatcher(Directory(genFixturesPath)),
+        reason:
+            '''Generated files content do not match the expected the generated files.''',
+      );
+
       final dartFormatResult = await Process.run(
         'dart',
         ['format', '.'],
@@ -178,4 +188,50 @@ dev_dependencies:
       tempDirectory.deleteSync(recursive: true);
     },
   );
+}
+
+class _DirectoryContentMatcher extends Matcher {
+  _DirectoryContentMatcher(this._expected);
+
+  final Directory _expected;
+
+  final _reason = StringBuffer();
+
+  @override
+  Description describe(Description description) {
+    return description.add(_reason.toString());
+  }
+
+  @override
+  bool matches(covariant Directory item, Map<dynamic, dynamic> matchState) {
+    _reason.clear();
+    final dirAContents = _expected.listSync(recursive: true).whereType<File>();
+    final dirBContents = item.listSync(recursive: true).whereType<File>();
+
+    if (dirAContents.length != dirBContents.length) {
+      _reason.write(
+        'Directory contents do not match, expected '
+        '${dirAContents.length} files, found ${dirBContents.length} files',
+      );
+      return false;
+    }
+
+    final files = <String, Digest>{};
+    for (final file in dirAContents) {
+      final realtivePath = path.relative(file.path, from: _expected.path);
+      final bytes = file.readAsBytesSync();
+      final digest = sha1.convert(bytes);
+      files[realtivePath] = digest;
+    }
+    for (final file in dirBContents) {
+      final realtivePath = path.relative(file.path, from: item.path);
+      final bytes = file.readAsBytesSync();
+      final digest = sha1.convert(bytes);
+      if (files[realtivePath] != digest) {
+        _reason.writeln('Contents of file `$realtivePath` do not match.');
+      }
+    }
+
+    return _reason.isEmpty;
+  }
 }
