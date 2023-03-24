@@ -20,14 +20,14 @@ void main() {
           path.join(Directory.current.path, 'test', 'r13n_brick', 'set_up');
       final copyResult = await Process.run(
         'cp',
-        ['-R', '$setUpPath/', tempDirectory.path],
+        ['-R', './', tempDirectory.path],
         runInShell: true,
-        workingDirectory: tempDirectory.path,
+        workingDirectory: setUpPath,
       );
       expect(
         copyResult,
         _isSuccessful,
-        reason: '`cp -R $setUpPath/ ${tempDirectory.path}` failed.',
+        reason: '`cp -R ./ ${tempDirectory.path}` at $setUpPath failed.',
       );
 
       final flutterPubGetResult = await Process.run(
@@ -39,7 +39,7 @@ void main() {
       expect(
         flutterPubGetResult,
         _isSuccessful,
-        reason: '`flutter pub get` failed.',
+        reason: '`flutter pub get` at ${tempDirectory.path} failed.',
       );
 
       final rootPath = Directory.current.parent.path;
@@ -71,7 +71,8 @@ void main() {
       expect(
         dartFormatResult,
         _isSuccessful,
-        reason: '`dart format . --set-exit-if-changed` failed.',
+        reason:
+            '`dart format . --set-exit-if-changed` at ${tempDirectory.path}  failed.',
       );
 
       final dartAnalyzeResult = await Process.run(
@@ -83,7 +84,7 @@ void main() {
       expect(
         dartAnalyzeResult,
         _isSuccessful,
-        reason: '`dart analyze .` failed.',
+        reason: '`dart analyze .` at ${tempDirectory.path} failed.',
       );
 
       final flutterTestResult = await Process.run(
@@ -95,7 +96,7 @@ void main() {
       expect(
         flutterTestResult,
         _isSuccessful,
-        reason: '`flutter test` failed.',
+        reason: '`flutter test` at ${tempDirectory.path} failed.',
       );
 
       tempDirectory.deleteSync(recursive: true);
