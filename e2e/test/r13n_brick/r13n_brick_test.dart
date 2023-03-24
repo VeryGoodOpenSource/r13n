@@ -12,7 +12,7 @@ const _sucessfulExitCode = 0;
 /// Objectives:
 ///
 /// * Generate AppRegionalizations from arb files (`mason make r13n`)
-/// * Ensure the code is formatted (`dart format .`)
+/// * Ensure the code is formatted (`dart format . --set-exit-if-changed`)
 /// * Ensure the code has no warnings/errors (`dart analyze .`)
 /// * Ensure generated AppRegionalizations have valid members
 void main() {
