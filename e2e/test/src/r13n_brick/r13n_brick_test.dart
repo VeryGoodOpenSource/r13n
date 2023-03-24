@@ -129,7 +129,7 @@ dev_dependencies:
             .toSet(),
         equals(expectedGeneratedFilePaths),
         reason:
-            '''Generated files peths do not match the expected the generated files.''',
+            '''Generated files paths do not match the expected the generated files.''',
       );
 
       await r13nMasonGenerator.hooks.postGen(
