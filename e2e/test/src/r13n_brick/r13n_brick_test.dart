@@ -33,7 +33,6 @@ void main() {
     "supportEmail": "us@verygood.ventures"
 }
 ''';
-
       File(arbUsPath)
         ..writeAsStringSync(arbUsFileContent)
         ..createSync();
@@ -60,7 +59,7 @@ template-arb-file: $templateArbFile
         ..writeAsStringSync(r13nYamlFileContent)
         ..createSync();
 
-      final pubspecYalPath = path.join(tempDirectory.path, 'pubspec.yaml');
+      final pubspecYamlPath = path.join(tempDirectory.path, 'pubspec.yaml');
       const pubsecYamlFileContent = '''
 name: r13n_e2e_test
 description: An r13n e2e test.
@@ -77,9 +76,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  very_good_analysis: ^3.1.0
 ''';
-      File(pubspecYalPath)
+      File(pubspecYamlPath)
         ..writeAsStringSync(pubsecYamlFileContent)
         ..createSync();
 
@@ -87,6 +85,7 @@ dev_dependencies:
         'flutter',
         ['pub', 'get'],
         runInShell: true,
+        workingDirectory: tempDirectory.path,
       );
       expect(
         flutterPubGetResult.exitCode,
