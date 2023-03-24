@@ -129,12 +129,12 @@ class _ProcessResultSuccessfulMatcher extends Matcher {
   ) {
     return describe(
       mismatchDescription.add(
-        '''Failed with exit code ${item.exitCode} and stderr:\n`${item.stderr}`''',
+        '''Failed with exit code ${item.exitCode} and stderr: "${item.stderr}". ''',
       ),
     );
   }
 
   @override
   Description describe(Description description) =>
-      description.add('Process to run succesfully');
+      description..addDescriptionOf('ProcessResult to run successfully.');
 }
