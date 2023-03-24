@@ -137,5 +137,5 @@ class _ProcessResultSuccessfulMatcher extends Matcher {
 
   @override
   Description describe(Description description) =>
-      description..addDescriptionOf('ProcessResult to run successfully.');
+      description.addDescriptionOf('ProcessResult to run successfully.');
 }
