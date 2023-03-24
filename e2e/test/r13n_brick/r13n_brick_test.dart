@@ -25,42 +25,32 @@ void main() {
 
       final arbPath = path.join(tempDirectory.path, 'lib', 'r13n', 'arb');
       Directory(arbPath).createSync(recursive: true);
-
-      final arbUsPath = path.join(arbPath, 'app_us.arb');
-      const arbUsFileContent = '''
+      final usArbFile = File(path.join(arbPath, 'app_us.arb'))
+        ..writeAsStringSync('''
 {
     "@@region": "us",
     "supportEmail": "us@verygood.ventures"
 }
-''';
-      File(arbUsPath)
-        ..writeAsStringSync(arbUsFileContent)
-        ..createSync();
-
-      final arbGbPath = path.join(arbPath, 'app_gb.arb');
-      const arbGbFileContent = '''
+''');
+      final gbArbFile = File(path.join(arbPath, 'app_gb.arb'))
+        ..writeAsStringSync('''
 {
     "@@region": "gb",
     "supportEmail": "gb@verygood.ventures"
 }
-''';
-      File(arbGbPath)
-        ..writeAsStringSync(arbGbFileContent)
-        ..createSync();
+''');
 
       final arbDirectory = path.relative(arbPath, from: tempDirectory.path);
-      final templateArbFile = path.basename(arbUsPath);
-      final r13nYamlPath = path.join(tempDirectory.path, 'r13n.yaml');
-      final r13nYamlFileContent = '''
+      final templateArbFile = path.basename(usArbFile.path);
+      final r13nYamlFile = File(path.join(tempDirectory.path, 'r13n.yaml'))
+        ..writeAsStringSync('''
 arb-dir: $arbDirectory
 template-arb-file: $templateArbFile
-''';
-      File(r13nYamlPath)
-        ..writeAsStringSync(r13nYamlFileContent)
-        ..createSync();
+''');
 
-      final pubspecYamlPath = path.join(tempDirectory.path, 'pubspec.yaml');
-      const pubsecYamlFileContent = '''
+      final pubspecYamlFile =
+          File(path.join(tempDirectory.path, 'pubspec.yaml'))
+            ..writeAsStringSync('''
 name: r13n_e2e_test
 description: An r13n e2e test.
 publish_to: "none"
@@ -76,10 +66,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-''';
-      File(pubspecYamlPath)
-        ..writeAsStringSync(pubsecYamlFileContent)
-        ..createSync();
+''');
+
+      await Future.wait([
+        usArbFile.create(),
+        gbArbFile.create(),
+        r13nYamlFile.create(),
+        pubspecYamlFile.create(),
+      ]);
 
       final flutterPubGetResult = await Process.run(
         'flutter',
@@ -99,8 +93,6 @@ dev_dependencies:
         reason:
             '''`flutter pub get` failed with exit code ${flutterPubGetResult.exitCode} and stderr ${flutterPubGetResult.stderr}''',
       );
-      // Wait for the pubspec.lock file to be written.
-      await Future<void>.delayed(const Duration(seconds: 5));
 
       final rootPath = Directory.current.parent.path;
       final r13nBrickPath = path.join(rootPath, 'bricks', 'r13n');
@@ -113,34 +105,20 @@ dev_dependencies:
         workingDirectory: tempDirectory.path,
         onVarsChanged: (newVars) => vars = newVars,
       );
-
-      final files = await r13nMasonGenerator.generate(
+      await r13nMasonGenerator.generate(
         directoryGeneratorTarget,
         vars: vars,
       );
-      final expectedGeneratedFilePaths = {
-        '$arbDirectory/gen/app_regionalizations.g.dart',
-        '$arbDirectory/gen/app_regionalizations_us.g.dart',
-        '$arbDirectory/gen/app_regionalizations_gb.g.dart',
-      };
-      expect(
-        files
-            .map((file) => path.relative(file.path, from: tempDirectory.path))
-            .toSet(),
-        equals(expectedGeneratedFilePaths),
-        reason:
-            '''Generated files paths do not match the expected the generated files.''',
-      );
-
       await r13nMasonGenerator.hooks.postGen(
         workingDirectory: tempDirectory.path,
         vars: vars,
       );
 
-      final genFixturesPath =
-          path.join(Directory.current.path, 'test', 'fixtures', 'gen');
+      final fixturesPath =
+          path.join(Directory.current.path, 'test', 'r13n_brick', 'fixtures');
+      final genFixturesPath = path.join(fixturesPath, 'gen');
       expect(
-        Directory('$arbDirectory/gen/'),
+        Directory(path.join(tempDirectory.path, arbDirectory, 'gen')),
         _DirectoryContentMatcher(Directory(genFixturesPath)),
         reason:
             '''Generated files content do not match the expected the generated files.''',
@@ -204,6 +182,16 @@ class _DirectoryContentMatcher extends Matcher {
   @override
   bool matches(covariant Directory item, Map<dynamic, dynamic> matchState) {
     _reason.clear();
+
+    if (!_expected.existsSync()) {
+      _reason.write('Expected directory (${_expected.path}) does not exist.');
+      return false;
+    }
+    if (!item.existsSync()) {
+      _reason.write('Directory (${item.path}) does not exist.');
+      return false;
+    }
+
     final dirAContents = _expected.listSync(recursive: true).whereType<File>();
     final dirBContents = item.listSync(recursive: true).whereType<File>();
 
@@ -216,17 +204,17 @@ class _DirectoryContentMatcher extends Matcher {
 
     final files = <String, Digest>{};
     for (final file in dirAContents) {
-      final realtivePath = path.relative(file.path, from: _expected.path);
+      final relativePath = path.relative(file.path, from: _expected.path);
       final bytes = file.readAsBytesSync();
       final digest = sha1.convert(bytes);
-      files[realtivePath] = digest;
+      files[relativePath] = digest;
     }
     for (final file in dirBContents) {
-      final realtivePath = path.relative(file.path, from: item.path);
+      final relativePath = path.relative(file.path, from: item.path);
       final bytes = file.readAsBytesSync();
       final digest = sha1.convert(bytes);
-      if (files[realtivePath] != digest) {
-        _reason.writeln('Contents of file `$realtivePath` do not match.');
+      if (files[relativePath] != digest) {
+        _reason.writeln('Contents of file `$relativePath` do not match.');
       }
     }
 
