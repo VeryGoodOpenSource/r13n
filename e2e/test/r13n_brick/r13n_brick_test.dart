@@ -72,7 +72,7 @@ void main() {
         dartFormatResult,
         _isSuccessful,
         reason:
-            '`dart format . --set-exit-if-changed` at ${tempDirectory.path}  failed.',
+            '''`dart format . --set-exit-if-changed` at ${tempDirectory.path} failed.''',
       );
 
       final dartAnalyzeResult = await Process.run(
