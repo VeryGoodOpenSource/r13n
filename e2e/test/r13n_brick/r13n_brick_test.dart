@@ -120,8 +120,6 @@ dev_dependencies:
       expect(
         Directory(path.join(tempDirectory.path, arbDirectory, 'gen')),
         _DirectoryContentMatcher(Directory(genFixturesPath)),
-        reason:
-            '''Generated files content do not match the expected the generated files.''',
       );
 
       final dartFormatResult = await Process.run(
