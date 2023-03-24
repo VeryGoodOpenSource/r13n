@@ -32,7 +32,7 @@ jobs:
           - "3.7.0"
           - ""
         test:
-          - test/src/r13n_brick/r13n_brick_test.dart
+          - test/r13n_brick/r13n_brick_test.dart
 
     steps:
       - name: 📚 Git Checkout
