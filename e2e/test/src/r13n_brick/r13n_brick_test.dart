@@ -129,7 +129,7 @@ dev_dependencies:
             .toSet(),
         equals(expectedGeneratedFilePaths),
         reason:
-            'Generated files do not match the expected the generated files.',
+            '''Generated files peths do not match the expected the generated files.''',
       );
 
       await r13nMasonGenerator.hooks.postGen(
@@ -209,8 +209,7 @@ class _DirectoryContentMatcher extends Matcher {
 
     if (dirAContents.length != dirBContents.length) {
       _reason.write(
-        'Directory contents do not match, expected '
-        '${dirAContents.length} files, found ${dirBContents.length} files',
+        '''Directory contents do not match, expected ${dirAContents.length} files, found ${dirBContents.length} files.''',
       );
       return false;
     }
