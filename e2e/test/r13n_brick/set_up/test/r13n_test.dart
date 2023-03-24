@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:r13n/r13n.dart';
+import 'package:r13n_e2e_test/r13n/arb/gen/app_regionalizations.g.dart';
 import 'package:r13n_e2e_test/r13n/arb/gen/app_regionalizations_gb.g.dart';
 import 'package:r13n_e2e_test/r13n/arb/gen/app_regionalizations_us.g.dart';
 
@@ -37,19 +38,16 @@ void main() {
     testWidgets('has "us" region as default', (tester) async {
       late BuildContext buildContext;
       await tester.pumpWidget(
-        Regionalizations(
-          region: Region(regionalCode: 'us'),
-          child: StatefulBuilder(
-            builder: (context, _) {
-              buildContext = context;
-              return SizedBox();
-            },
-          ),
+        StatefulBuilder(
+          builder: (context, _) {
+            buildContext = context;
+            return SizedBox();
+          },
         ),
       );
 
       final region = Region(regionalCode: 'us');
-      expect(Regionalizations.regionOf(buildContext), equals(region));
+      expect(AppRegionalizations.of(buildContext).region, equals(region));
     });
   });
 }
