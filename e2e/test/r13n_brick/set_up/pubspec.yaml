@@ -1,0 +1,15 @@
+name: r13n_e2e_test
+description: An r13n e2e test.
+publish_to: "none"
+
+environment:
+  sdk: ">=2.18.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  r13n: 0.1.0-dev.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
