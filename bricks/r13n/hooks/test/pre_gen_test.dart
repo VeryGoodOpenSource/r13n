@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:mason/mason.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:path/path.dart' as path;
+import 'package:r13n_hooks/hooks.dart';
 import 'package:test/test.dart';
 
 import '../pre_gen.dart' as pre_gen;
@@ -27,12 +28,14 @@ void main() {
 
     setUp(() {
       configFile = _MockFile();
-      when(() => configFile.readAsString()).thenAnswer(
-        (_) async => '''
+      const configFileContent = '''
 arb-dir: ARB_DIR
 template-arb-file: TEMPLATE_ARB_FILE
-''',
+''';
+      when(() => configFile.readAsString()).thenAnswer(
+        (_) async => configFileContent,
       );
+      when(() => configFile.existsSync()).thenReturn(true);
       arbDir = _MockDirectory();
 
       final fileSystemEntity = _MockFileSystemEntity();
@@ -40,14 +43,16 @@ template-arb-file: TEMPLATE_ARB_FILE
       when(() => arbDir.listSync()).thenReturn([fileSystemEntity]);
 
       arbFile = _MockFile();
-      when(() => arbFile.readAsString()).thenAnswer(
-        (_) async => '''
+      const arbFileContent = '''
 {
     "@@region": "us",
     "aValue": "A Value"
 }
-''',
+''';
+      when(() => arbFile.readAsString()).thenAnswer(
+        (_) async => arbFileContent,
       );
+      when(() => arbFile.existsSync()).thenReturn(true);
 
       logger = _MockLogger();
       hookContext = _MockHookContext();
@@ -64,6 +69,16 @@ template-arb-file: TEMPLATE_ARB_FILE
       });
 
       await IOOverrides.runZoned(
+        createDirectory: (path) => arbDir,
+        createFile: (path) {
+          if (path.endsWith('r13n.yaml')) {
+            return configFile;
+          } else if (path.endsWith('app_us.arb')) {
+            return arbFile;
+          } else {
+            throw UnsupportedError('Unexpected path: $path');
+          }
+        },
         () async {
           await pre_gen.preGen(hookContext, ensureRuntimeCompatibility: (_) {});
 
@@ -86,16 +101,6 @@ template-arb-file: TEMPLATE_ARB_FILE
             }),
           );
         },
-        createFile: (path) {
-          if (path.endsWith('r13n.yaml')) {
-            return configFile;
-          } else if (path.endsWith('app_us.arb')) {
-            return arbFile;
-          } else {
-            throw UnsupportedError('Unexpected path: $path');
-          }
-        },
-        createDirectory: (path) => arbDir,
       );
     });
 
@@ -140,7 +145,7 @@ sdks:
       try {
         await pre_gen.preGen(hookContext, exit: exitCalls.add);
       } catch (err) {
-        expect(err, isA<pre_gen.R13nException>());
+        expect(err, isA<R13nException>());
       }
       expect(exitCalls, equals([]));
       Directory.current = cwd;
