@@ -43,3 +43,4 @@ app.*.map.json
 coverage/
 .test_coverage.dart
 .test_runner.dart
+example/pubspec.lock
