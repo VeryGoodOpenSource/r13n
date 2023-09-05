@@ -89,15 +89,15 @@ template-arb-file: TEMPLATE_ARB_FILE
                 {
                   'code': 'us',
                   'values': [
-                    {'key': 'aValue', 'value': 'A Value'}
-                  ]
+                    {'key': 'aValue', 'value': 'A Value'},
+                  ],
                 }
               ],
               'getters': [
-                {'value': 'aValue'}
+                {'value': 'aValue'},
               ],
               'fallbackCode': 'us',
-              'arbDir': 'ARB_DIR'
+              'arbDir': 'ARB_DIR',
             }),
           );
         },
