@@ -1,7 +1,7 @@
 name: r13n_hooks
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: ">=2.18.0 <4.0.0"
 
 dependencies:
   arb_parser:
@@ -16,4 +16,3 @@ dev_dependencies:
   mocktail: ^1.0.0
   test: ^1.21.1
   very_good_analysis: ^5.1.0
-
