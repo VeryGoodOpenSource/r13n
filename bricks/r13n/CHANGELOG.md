@@ -1,3 +1,12 @@
+# 0.1.0-dev.8
+
+- refactor: decompose hooks into multiple files ([#43](https://github.com/VeryGoodOpenSource/r13n/pull/43))
+- chore: update dart, analysis and fix lint ([#57](https://github.com/VeryGoodOpenSource/r13n/pull/57))
+
+# 0.1.0-dev.7
+
+- fix: only format arb directory in post_gen hook
+
 # 0.1.0-dev.7
 
 - fix: only format arb directory in post_gen hook
