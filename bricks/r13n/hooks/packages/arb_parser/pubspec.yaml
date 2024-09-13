@@ -3,7 +3,7 @@ description: A simple `arb` file parser.
 publish_to: none
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: ">=2.18.0 <4.0.0"
 
 dev_dependencies:
   mocktail: ^0.3.0
