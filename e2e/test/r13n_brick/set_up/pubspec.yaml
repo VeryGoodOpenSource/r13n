@@ -3,7 +3,7 @@ description: An r13n e2e test.
 publish_to: "none"
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: ^3.5.0
 
 dependencies:
   flutter:
