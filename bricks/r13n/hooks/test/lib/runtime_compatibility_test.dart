@@ -1,3 +1,4 @@
+// Not needed for test files
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
@@ -44,7 +45,7 @@ void main() {
     tearDown(() {
       try {
         tempDir.deleteSync(recursive: true);
-      } catch (_) {}
+      } on Exception catch (_) {}
     });
 
     test('throws when a pubspec.lock does not exist', () {
