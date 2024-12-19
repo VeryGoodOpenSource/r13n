@@ -140,7 +140,9 @@ class _RegionalizationsState extends State<Regionalizations> {
       final delegate = delegates[i];
       final oldDelegate = oldDelegates[i];
       if (delegate.runtimeType != oldDelegate.runtimeType ||
-          delegate.shouldReload(oldDelegate)) return true;
+          delegate.shouldReload(oldDelegate)) {
+        return true;
+      }
     }
     return false;
   }
