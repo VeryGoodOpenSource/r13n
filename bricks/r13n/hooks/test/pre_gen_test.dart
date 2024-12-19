@@ -144,7 +144,7 @@ sdks:
       final exitCalls = <int>[];
       try {
         await pre_gen.preGen(hookContext, exit: exitCalls.add);
-      } catch (err) {
+      } on Exception catch (err) {
         expect(err, isA<R13nException>());
       }
       expect(exitCalls, equals([]));
