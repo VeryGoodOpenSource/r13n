@@ -5,4 +5,4 @@ repository: https://github.com/VeryGoodOpenSource/r13n
 version: 0.1.0-dev.8
 
 environment:
-  mason: ">=0.1.0-dev.28 <0.1.0"
+  mason: ">=0.1.0-dev.28 <0.2.0"
