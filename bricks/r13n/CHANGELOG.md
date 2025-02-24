@@ -1,3 +1,7 @@
+# 0.1.0-dev.9 
+
+- chore: bump environment mason constraint ([#79](https://github.com/VeryGoodOpenSource/r13n/pull/79))
+
 # 0.1.0-dev.8
 
 - refactor: decompose hooks into multiple files ([#43](https://github.com/VeryGoodOpenSource/r13n/pull/43))
