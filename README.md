@@ -1,5 +1,14 @@
 # 🌐 r13n
 
+> **Deprecated:** This repository has been archived and is no longer maintained.
+> The `r13n` package has been discontinued on [pub.dev](https://pub.dev/packages/r13n)
+> and the `r13n` brick has been discontinued on
+> [BrickHub](https://brickhub.dev/bricks/r13n). There will be no further
+> updates, bug fixes, or official support from Very Good Ventures.
+>
+> If you need to continue development, you are welcome to
+> [fork this repository](https://github.com/VeryGoodOpenSource/r13n/fork).
+
 [![Very Good Ventures][logo_black]][very_good_ventures_link_light]
 [![Very Good Ventures][logo_white]][very_good_ventures_link_dark]
 
@@ -130,6 +139,9 @@ Widget build(BuildContext context) {
 ```
 
 ## Roadmap 🗺
+
+> **Note:** This roadmap will not be pursued. The package is discontinued and
+> this repository is archived.
 
 - [ ] Support asynchronous delegates
 - [ ] Support regionalization based on IP address
