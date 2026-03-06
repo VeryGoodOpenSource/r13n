@@ -1,3 +1,9 @@
+# Discontinued
+
+This package is discontinued and this repository has been archived. There will
+be no further releases or official support from Very Good Ventures. If you need
+to continue development, please fork this repository.
+
 # 0.1.0-dev.3
 
 - feat: update very good analysis to 4.0.0 ([#40](https://github.com/VeryGoodOpenSource/r13n/pull/40))
